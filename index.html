@@ -627,6 +627,43 @@
     padding: 0 2px;
     border-radius: 3px;
 }
+      .color-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.color-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.color-btn.active {
+    border-color: var(--accent);
+    transform: scale(1.1);
+}
+
+/* Couleurs pour le texte */
+.text-color.black { background-color: #000000; }
+.text-color.white { background-color: #ffffff; border: 1px solid #ccc; }
+.text-color.dark-blue { background-color: #1a365d; }
+.text-color.dark-brown { background-color: #5c4a3c; }
+.text-color.dark-green { background-color: #2d5016; }
+.text-color.dark-red { background-color: #7b341e; }
+.text-color.gray { background-color: #4a5568; }
+
+/* Couleurs pour le fond */
+.bg-color.beige { background-color: #d2c9a3; }
+.bg-color.white { background-color: #ffffff; border: 1px solid #ccc; }
+.bg-color.light-gray { background-color: #e2e8f0; }
+.bg-color.light-blue { background-color: #ebf8ff; }
+.bg-color.light-yellow { background-color: #fffff0; }
+.bg-color.light-green { background-color: #f0fff4; }
+.bg-color.light-pink { background-color: #fff5f5; }
     </style>
 </head>
 <body>
@@ -746,7 +783,31 @@
                         <option value="'Arial', sans-serif">Arial</option>
                     </select>
                 </div>
-              
+              <div class="option-group">
+    <label class="option-label">Couleur du texte</label>
+    <div class="color-options">
+        <button class="color-btn text-color black active" data-color="#000000"></button>
+        <button class="color-btn text-color white" data-color="#ffffff"></button>
+        <button class="color-btn text-color dark-blue" data-color="#1a365d"></button>
+        <button class="color-btn text-color dark-brown" data-color="#5c4a3c"></button>
+        <button class="color-btn text-color dark-green" data-color="#2d5016"></button>
+        <button class="color-btn text-color dark-red" data-color="#7b341e"></button>
+        <button class="color-btn text-color gray" data-color="#4a5568"></button>
+    </div>
+</div>
+
+<div class="option-group">
+    <label class="option-label">Couleur de fond</label>
+    <div class="color-options">
+        <button class="color-btn bg-color beige active" data-color="#d2c9a3"></button>
+        <button class="color-btn bg-color white" data-color="#ffffff"></button>
+        <button class="color-btn bg-color light-gray" data-color="#e2e8f0"></button>
+        <button class="color-btn bg-color light-blue" data-color="#ebf8ff"></button>
+        <button class="color-btn bg-color light-yellow" data-color="#fffff0"></button>
+        <button class="color-btn bg-color light-green" data-color="#f0fff4"></button>
+        <button class="color-btn bg-color light-pink" data-color="#fff5f5"></button>
+    </div>
+</div>
             </div>
         </div>
 
@@ -1071,7 +1132,27 @@ function highlightSearchTerm(term) {
                     updateChapterContent();
                 }
             });
-            
+            // Couleurs personnalisées
+const textColorButtons = document.querySelectorAll('.text-color');
+const bgColorButtons = document.querySelectorAll('.bg-color');
+
+// Écouteurs pour les couleurs de texte
+textColorButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        textColorButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        document.body.style.color = button.getAttribute('data-color');
+    });
+});
+
+// Écouteurs pour les couleurs de fond
+bgColorButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        bgColorButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        document.body.style.backgroundColor = button.getAttribute('data-color');
+    });
+});
             function updateChapterContent() {
                 chapterIndicator.textContent = `Chapitre ${currentChapter}: ${getChapterTitle(currentChapter)}`;
                 
