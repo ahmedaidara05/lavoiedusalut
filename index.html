@@ -511,6 +511,122 @@
                 padding: 20px;
             }
         }
+      
+      /* Search Modal */
+.search-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 2000;
+    padding-top: 60px;
+}
+
+.search-modal.active {
+    display: flex;
+}
+
+.search-container {
+    background: var(--card-bg);
+    border-radius: 15px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.search-header h3 {
+    margin: 0;
+    color: var(--text);
+}
+
+.close-search {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.search-input-container {
+    display: flex;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+#searchInput {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px 0 0 25px;
+    font-size: 1rem;
+    outline: none;
+}
+
+#searchButton {
+    padding: 0 20px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0 25px 25px 0;
+    cursor: pointer;
+}
+
+.search-results {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.search-result-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.search-result-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.result-chapter {
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 5px;
+}
+
+.result-text {
+    color: var(--text);
+    font-size: 0.9rem;
+}
+
+.no-results {
+    padding: 20px;
+    text-align: center;
+    color: var(--text);
+    opacity: 0.7;
+}
+
+.highlight {
+    background: yellow;
+    color: black;
+    padding: 0 2px;
+    border-radius: 3px;
+}
     </style>
 </head>
 <body>
@@ -699,7 +815,133 @@
                 });
                 chaptersGrid.appendChild(chapterCard);
             }
+            // Elements pour la recherche
+const searchBtn = document.querySelector('.header-actions .header-btn:nth-child(2)');
+const searchModal = document.getElementById('searchModal');
+const closeSearchBtn = document.getElementById('closeSearch');
+const searchInput = document.getElementById('searchInput');
+const searchButton = document.getElementById('searchButton');
+const searchResults = document.getElementById('searchResults');
+
+// Ouvrir le modal de recherche
+searchBtn.addEventListener('click', () => {
+    searchModal.classList.add('active');
+    searchInput.focus();
+});
+
+// Fermer le modal de recherche
+closeSearchBtn.addEventListener('click', () => {
+    searchModal.classList.remove('active');
+    searchInput.value = '';
+    searchResults.innerHTML = '<div class="no-results">Aucune recherche effectuée</div>';
+});
+
+// Fermer le modal en cliquant à l'extérieur
+searchModal.addEventListener('click', (e) => {
+    if (e.target === searchModal) {
+        searchModal.classList.remove('active');
+        searchInput.value = '';
+        searchResults.innerHTML = '<div class="no-results">Aucune recherche effectuée</div>';
+    }
+});
+
+// Effectuer une recherche
+searchButton.addEventListener('click', performSearch);
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        performSearch();
+    }
+});
+
+function performSearch() {
+    const searchTerm = searchInput.value.trim();
+    
+    // Effacer les anciens résultats avant de faire une nouvelle recherche
+    searchResults.innerHTML = '';
+    
+    if (searchTerm.length < 2) {
+        searchResults.innerHTML = '<div class="no-results">Veuillez entrer au moins 2 caractères</div>';
+        return;
+    }
+    
+    // Simuler des résultats de recherche (dans une vraie application, vous chercherez dans votre contenu réel)
+    const results = simulateSearch(searchTerm);
+    
+    if (results.length === 0) {
+        searchResults.innerHTML = `<div class="no-results">Aucun résultat trouvé pour "${searchTerm}"</div>`;
+        return;
+    }
+    
+    // Afficher les résultats
+    results.forEach(result => {
+        const resultElement = document.createElement('div');
+        resultElement.className = 'search-result-item';
+        resultElement.innerHTML = `
+            <div class="result-chapter">Chapitre ${result.chapter}: ${result.title}</div>
+            <div class="result-text">${highlightText(result.text, searchTerm)}</div>
+        `;
+        
+        resultElement.addEventListener('click', () => {
+            currentChapter = result.chapter;
+            updateChapterContent();
+            showPage('readingPage');
+            searchModal.classList.remove('active');
+            searchInput.value = '';
             
+            // Surligner le texte dans le chapitre
+            highlightSearchTerm(searchTerm);
+        });
+        
+        searchResults.appendChild(resultElement);
+    });
+}
+function simulateSearch(term) {
+    // Cette fonction simule une recherche - dans une vraie app, vous chercherez dans votre vrai contenu
+    const allResults = [
+        { chapter: 1, title: "Le commencement", text: "Notre héros, Kael, un jeune fermier au cœur pur, ignorait encore le destin extraordinaire qui l'attendait." },
+        { chapter: 3, title: "Le défi", text: "Kael fit face à son premier défi, une créature mystérieuse qui gardait l'entrée de la forêt ancienne." },
+        { chapter: 5, title: "Le voyage", text: "Le voyage à travers les montagnes embrumées s'avéra plus difficile que prévu." },
+        { chapter: 7, title: "La révélation", text: "La révélation de son véritable héritage choqua Kael jusqu'au plus profond de son être." },
+        { chapter: 2, title: "La rencontre", text: "C'est lors de cette rencontre fortuite que Kael fit la connaissance d'Elara, la mystérieuse magicienne." },
+        { chapter: 4, title: "L'alliance", text: "L'alliance avec les habitants de la forêt fut cruciale pour la suite de leur quête." },
+        { chapter: 6, title: "L'obstacle", text: "L'obstacle semblait infranchissable, mais Kael ne perdit pas espoir." },
+        { chapter: 8, title: "La trahison", text: "La trahison vint de là où il s'y attendait le moins, le laissant abasourdi." }
+    ];
+    
+    // Filtrer les résultats en fonction du terme de recherche
+    return allResults.filter(result => 
+        result.text.toLowerCase().includes(term.toLowerCase()) || 
+        result.title.toLowerCase().includes(term.toLowerCase())
+    );
+}
+function highlightText(text, term) {
+    const regex = new RegExp(`(${term})`, 'gi');
+    return text.replace(regex, '<span class="highlight">$1</span>');
+}
+
+function highlightSearchTerm(term) {
+    const content = document.getElementById('chapterContent');
+    
+    // D'abord, retirer les anciens surlignages
+    const oldHighlights = content.querySelectorAll('.highlight');
+    oldHighlights.forEach(el => {
+        const parent = el.parentNode;
+        parent.replaceChild(document.createTextNode(el.textContent), el);
+        parent.normalize(); // Fusionner les nœuds texte adjacents
+    });
+    
+    // Ensuite, appliquer les nouveaux surlignages
+    if (term && term.length >= 2) {
+        const regex = new RegExp(`(${term})`, 'gi');
+        content.innerHTML = content.innerHTML.replace(regex, '<span class="highlight">$1</span>');
+        
+        // Faire défiler jusqu'au premier résultat
+        const firstHighlight = content.querySelector('.highlight');
+        if (firstHighlight) {
+            firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+}
             // Navigation functions
             function showPage(pageId) {
                 pages.forEach(page => {
@@ -898,5 +1140,25 @@
             updateChapterContent();
         });
     </script>
+  <!-- Search Modal -->
+<div class="search-modal" id="searchModal">
+    <div class="search-container">
+        <div class="search-header">
+            <h3>Rechercher dans le livre</h3>
+            <button class="close-search" id="closeSearch">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="search-input-container">
+            <input type="text" id="searchInput" placeholder="Entrez votre recherche...">
+            <button id="searchButton">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        <div class="search-results" id="searchResults">
+            <div class="no-results">Aucune recherche effectuée</div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
