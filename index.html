@@ -115,9 +115,9 @@
         /* Pages */
         .page {
             display: none;
-            min-height: 100vh;
+            min-height: calc(100vh - 70px);
             padding: 20px;
-            padding-bottom: 80px;
+            padding-bottom: 20px;
         }
 
         .active {
@@ -192,13 +192,13 @@
         }
 
         /* Chapters Page */
-       .chapters-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
-    margin-bottom: 100px; /* Espace pour les éléments en bas */
-}
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
 
         .chapter-card {
             background: var(--card-bg);
@@ -285,6 +285,7 @@
         .nav-btn:disabled {
             background: #cccccc;
             cursor: not-allowed;
+            opacity: 0.6;
         }
 
         .nav-btn i {
@@ -300,23 +301,24 @@
         }
 
         /* Customization Panel */
-   .customization-panel {
-    position: fixed;
-    bottom: -350px; /* Position cachée par défaut */
-    left: 0;
-    right: 0;
-    background: var(--card-bg);
-    border-radius: 20px 20px 0 0;
-    padding: 20px;
-    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
-    transition: var(--transition);
-    z-index: 1000; /* Augmenter le z-index */
-    height: 350px; /* Hauteur fixe */
-}
+        .customization-panel {
+            position: fixed;
+            bottom: -350px;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border-radius: 20px 20px 0 0;
+            padding: 20px;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
+            transition: var(--transition);
+            z-index: 1000;
+            height: 350px;
+        }
 
-.customization-panel.open {
-    bottom: 70px; /* Remonter au-dessus du lecteur audio */
-}
+        .customization-panel.open {
+            bottom: 0;
+            z-index: 1100;
+        }
 
         .panel-header {
             display: flex;
@@ -416,83 +418,19 @@
             font-weight: 500;
         }
 
-        /* Audio Player */
-        .audio-player {
+        /* Navigation Bar */
+        .nav-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
             background: var(--card-bg);
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
-            z-index: 900;
+            z-index: 800;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
         }
-
-        .player-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .play-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .play-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .player-info {
-            flex-grow: 1;
-            padding: 0 15px;
-        }
-
-        .chapter-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 5px;
-            background: #ddd;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .progress {
-            height: 100%;
-            background: var(--primary);
-            width: 30%;
-        }
-
-        /* Navigation Bar */
-  .nav-bar {
-    position: fixed;
-    bottom: 0; /* Position tout en bas */
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-around;
-    padding: 15px;
-    background: var(--card-bg);
-    z-index: 900; /* Z-index inférieur au panneau */
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-}
-
 
         .nav-item {
             display: flex;
@@ -566,15 +504,9 @@
                 font-size: 1.5rem;
             }
             
-          .content-container {
-    background: var(--card-bg);
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    margin-bottom: 100px; /* Espace pour les éléments en bas */
-    max-height: calc(60vh - 100px); /* Ajustement de la hauteur */
-    overflow-y: auto;
-}
+            .content-container {
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -635,7 +567,7 @@
                     
                     <p>Notre héros, Kael, un jeune fermier au cœur pur, ignorait encore le destin extraordinaire qui l'attendait. Ce matin-là, alors qu'il cultivait ses terres, il découvrit un artefact étrange, brillant d'une lumière bleutée.</p>
                     
-                    <p>Intrigué, he s'approcha prudemment. L'objet semblait fait d'un métal inconnu, avec des inscriptions complexes qui semblaient presque vivantes. Au moment où ses doigts effleurèrent la surface, une décharge d'énergie le traversa, et des visions de mondes lointains et de créatures mystiques envahirent son esprit.</p>
+                    <p>Intrigué, il s'approcha prudemment. L'objet semblait fait d'un métal inconnu, avec des inscriptions complexes qui semblaient presque vivantes. Au moment où ses doigts effleurèrent la surface, une décharge d'énergie le traversa, et des visions de mondes lointains et de créatures mystiques envahirent son esprit.</p>
                     
                     <p>À cet instant, Kael comprit que sa vie ne serait plus jamais la même. Une quête venait de commencer, une quête qui le mènerait aux confins du connu, à la rencontre de peuples oubliés et de magie ancienne.</p>
                 </div>
@@ -698,8 +630,6 @@
             </div>
         </div>
 
-       
-
         <!-- Navigation Bar -->
         <div class="nav-bar">
             <a href="#" class="nav-item active" data-page="homePage">
@@ -714,7 +644,10 @@
                 <i class="fas fa-book nav-icon"></i>
                 <span>Lecture</span>
             </a>
-            
+            <a href="#" class="nav-item" id="customizeNav">
+                <i class="fas fa-paint-brush nav-icon"></i>
+                <span>Personnaliser</span>
+            </a>
         </div>
     </div>
 
@@ -740,8 +673,8 @@
             const chaptersGrid = document.getElementById('chaptersGrid');
             const prevChapterBtn = document.getElementById('prevChapter');
             const nextChapterBtn = document.getElementById('nextChapter');
-            const playAudioBtn = document.getElementById('playAudio');
             const chapterIndicator = document.querySelector('.chapter-indicator');
+            const navBar = document.querySelector('.nav-bar');
             
             // Current chapter tracking
             let currentChapter = 1;
@@ -753,7 +686,7 @@
                 chapterCard.className = 'chapter-card';
                 chapterCard.innerHTML = `
                     <div class="chapter-number">${i}</div>
-                    <div class="chapter-title">Chapitre ${i}</div>
+                    <div class="chapter-title">${getChapterTitle(i)}</div>
                 `;
                 chapterCard.addEventListener('click', () => {
                     currentChapter = i;
@@ -796,25 +729,32 @@
             });
             
             // Customization panel
-            openCustomizationBtn.addEventListener('click', () => {
-                customizationPanel.classList.add('open');
-            });
+            function toggleCustomizationPanel() {
+                customizationPanel.classList.toggle('open');
+                // Cacher la barre de navigation quand le panneau est ouvert
+                if (customizationPanel.classList.contains('open')) {
+                    navBar.style.opacity = '0';
+                    navBar.style.pointerEvents = 'none';
+                } else {
+                    navBar.style.opacity = '1';
+                    navBar.style.pointerEvents = 'auto';
+                }
+            }
             
-            closeCustomizationBtn.addEventListener('click', () => {
-                customizationPanel.classList.remove('open');
-            });
-            
-            customizeNav.addEventListener('click', (e) => {
+            openCustomizationBtn.addEventListener('click', toggleCustomizationPanel);
+            closeCustomizationBtn.addEventListener('click', toggleCustomizationPanel);
+            customizeNav.addEventListener('click', function(e) {
                 e.preventDefault();
-                customizationPanel.classList.add('open');
+                toggleCustomizationPanel();
             });
             
             // Close panel when clicking outside
             document.addEventListener('click', (e) => {
-                if (!customizationPanel.contains(e.target) && 
+                if (customizationPanel.classList.contains('open') && 
+                    !customizationPanel.contains(e.target) && 
                     !openCustomizationBtn.contains(e.target) && 
                     !customizeNav.contains(e.target)) {
-                    customizationPanel.classList.remove('open');
+                    toggleCustomizationPanel();
                 }
             });
             
@@ -896,14 +836,11 @@
                 // In a real app, you would load the actual chapter content here
                 // For demonstration, we'll just show placeholder content
                 contentElement.innerHTML = `
-                    <p>Contenu du chapitre ${currentChapter} : ${getChapterTitle(currentChapter)}</p>
+                    <h3>Chapitre ${currentChapter}: ${getChapterTitle(currentChapter)}</h3>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eu ultricies lacinia, nunc nisl aliquam nisl, eu aliquam nisl nunc eu nisl. Nullam auctor, nisl eu ultricies lacinia, nunc nisl aliquam nisl, eu aliquam nisl nunc eu nisl.</p>
                     <p>Sed vitae nisl euismod, aliquam nisl eu, aliquam nisl. Sed vitae nisl euismod, aliquam nisl eu, aliquam nisl. Sed vitae nisl euismod, aliquam nisl eu, aliquam nisl.</p>
                     <p>Nullam auctor, nisl eu ultricies lacinia, nunc nisl aliquam nisl, eu aliquam nisl nunc eu nisl. Nullam auctor, nisl eu ultricies lacinia, nunc nisl aliquam nisl, eu aliquam nisl nunc eu nisl.</p>
                 `;
-                
-                // Update audio player
-                document.querySelector('.chapter-name').textContent = `Chapitre ${currentChapter}: ${getChapterTitle(currentChapter)}`;
             }
             
             function getChapterTitle(chapterNumber) {
@@ -952,18 +889,6 @@
                 
                 return titles[chapterNumber - 1] || `Chapitre ${chapterNumber}`;
             }
-            
-            // Audio player
-            let isPlaying = false;
-            
-            playAudioBtn.addEventListener('click', () => {
-                isPlaying = !isPlaying;
-                if (isPlaying) {
-                    playAudioBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                } else {
-                    playAudioBtn.innerHTML = '<i class="fas fa-play"></i>';
-                }
-            });
             
             // Initialize chapter content
             updateChapterContent();
