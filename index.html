@@ -6,6 +6,7 @@
     <title>Livre Numérique - Expérience de Lecture Immersive</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
       :root {
     --primary: #c5a233;
@@ -235,53 +236,107 @@
             margin-bottom: 20px;
         }
 
-        .chapter-indicator {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text);
-        }
+       .chapter-indicator {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem !important;
+    font-weight: 600;
+    color: #3a3a3a !important;
+    font-style: italic;
+}
 
-        .content-container {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            max-height: 60vh;
-            overflow-y: auto;
-        }
-
+       /* Nouveau style pour le conteneur de texte */
+.content-container {
+    background: #f8f4e9 !important; /* Couleur papier ancien */
+    border-radius: 5px !important;
+    padding: 40px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 
+                inset 0 0 0 1px rgba(255, 255, 255, 0.8),
+                inset 0 0 20px rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: 30px !important;
+    max-height: 60vh !important;
+    overflow-y: auto !important;
+    position: relative;
+    border: 1px solid #d9c89e !important;
+}
+/* Effet de texture de papier */
+.content-container:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    opacity: 0.4;
+    z-index: 0;
+}
         .content {
-            font-family: 'Roboto Slab', serif;
-            line-height: 1.8;
-            font-size: 1.1rem;
-        }
+    font-family: 'Cormorant Garamond', 'Georgia', serif !important;
+    line-height: 1.7 !important;
+    font-size: 1.2rem !important;
+    color: #3a3a3a !important;
+    text-align: justify !important;
+    position: relative;
+    z-index: 1;
+}
 
-        .content p {
-            margin-bottom: 20px;
-        }
 
+       .content p {
+    margin-bottom: 1.5em !important;
+    text-indent: 1.5em !important;
+}
+.content p:first-of-type:first-letter {
+    initial-letter: 2;
+    font-size: 3.2rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin-right: 0.1em;
+    line-height: 0.8;
+}
+      .content h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 1.8rem;
+    margin: 1.5em 0 0.8em 0;
+    color: #2a2a2a;
+    border-bottom: 1px solid #d9c89e;
+    padding-bottom: 0.3em;
+}
+.reading-page {
+    padding: 15px 40px 20px !important; /* Réduit l'espace en haut et en bas */
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 70px); /* Prend toute la hauteur moins le header */
+}
+
+/* Amélioration de l'en-tête */
+.reading-header {
+    margin-bottom: 30px !important;
+}
         .reading-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 20px;
+            margin-top: 30px;
         }
 
         .nav-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-        }
-
+    background: transparent !important;
+    color: #5a5a5a !important;
+    border: 1px solid #d9c89e !important;
+    padding: 10px 25px !important;
+    font-family: 'Cormorant Garamond', serif !important;
+    font-size: 1.1rem !important;
+    font-weight: 500 !important;
+}
+.nav-btn:hover {
+    background: rgba(197, 162, 51, 0.1) !important;
+    transform: translateY(-2px) !important;
+}
         .nav-btn:disabled {
             background: #cccccc;
             cursor: not-allowed;
@@ -318,11 +373,20 @@
 .customization-panel.open {
     bottom: 0; /* Positionné tout en bas */
 }
-/* Assurer que le contenu est scrollable */
 .content-container {
-    max-height: 50vh; /* Réduit la hauteur maximale */
+    background: #f8f4e9 !important;
+    border-radius: 5px !important;
+    padding: 30px 40px !important; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 
+                inset 0 0 0 1px rgba(255, 255, 255, 0.8),
+                inset 0 0 20px rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: 15px !important; /* Réduit la marge en bas */
+    flex: 1; /* Prend tout l'espace disponible */
+    overflow-y: auto !important;
+    position: relative;
+    border: 1px solid #d9c89e !important;
+    max-height: none !important; /* Supprime la hauteur maximale fixe */
 }
-
         .panel-header {
             display: flex;
             justify-content: space-between;
@@ -705,39 +769,39 @@
             </div>
         </div>
 
-        <!-- Reading Page -->
-        <div class="page" id="readingPage">
-            <div class="reading-header">
-                <button class="header-btn" id="backToChapters">
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-                <div class="chapter-indicator">Chapitre 1: Le commencement</div>
-                <button class="header-btn" id="openCustomization">
-                    <i class="fas fa-sliders-h"></i>
-                </button>
-            </div>
-            
-            <div class="content-container">
-                <div class="content" id="chapterContent">
-                    <p>Il était une fois, dans un monde lointain, une aventure qui allait changer le cours de l'histoire. Le soleil se levait à peine sur les collines verdoyantes du royaume d'Eldoria, projetant de longues ombres qui dansaient au gré du vent.</p>
-                    
-                    <p>Notre héros, Kael, un jeune fermier au cœur pur, ignorait encore le destin extraordinaire qui l'attendait. Ce matin-là, alors qu'il cultivait ses terres, il découvrit un artefact étrange, brillant d'une lumière bleutée.</p>
-                    
-                    <p>Intrigué, il s'approcha prudemment. L'objet semblait fait d'un métal inconnu, avec des inscriptions complexes qui semblaient presque vivantes. Au moment où ses doigts effleurèrent la surface, une décharge d'énergie le traversa, et des visions de mondes lointains et de créatures mystiques envahirent son esprit.</p>
-                    
-                    <p>À cet instant, Kael comprit que sa vie ne serait plus jamais la même. Une quête venait de commencer, une quête qui le mènerait aux confins du connu, à la rencontre de peuples oubliés et de magie ancienne.</p>
-                </div>
-            </div>
-            
-            <div class="reading-controls">
-                <button class="nav-btn prev-btn" id="prevChapter">
-                    <i class="fas fa-chevron-left"></i> Précédent
-                </button>
-                <button class="nav-btn next-btn" id="nextChapter">
-                    Suivant <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-        </div>
+     <!-- Page de lecture -->
+<div class="page" id="readingPage">
+    <div class="reading-header">
+        <button class="header-btn" id="backToChapters">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="chapter-indicator">Chapitre 1</div>
+        <button class="header-btn" id="openCustomization">
+            <i class="fas fa-sliders-h"></i>
+        </button>
+    </div>
+    
+    <!-- Remplacez le conteneur par une simple div sans style -->
+    <div class="content" id="chapterContent">
+        <h3>Le commencement</h3>
+        <p>Il était une fois, dans un monde lointain, une aventure qui allait changer le cours de l'histoire. Le soleil se levait à peine sur les collines verdoyantes du royaume d'Eldoria, projetant de longues ombres qui dansaient au gré du vent.</p>
+        
+        <p>Notre héros, Kael, un jeune fermier au cœur pur, ignorait encore le destin extraordinaire qui l'attendait. Ce matin-là, alors qu'il cultivait ses terres, il découvrit un artefact étrange, brillant d'une lumière bleutée.</p>
+        
+        <p>Intrigué, il s'approcha prudemment. L'objet semblait fait d'un métal inconnu, avec des inscriptions complexes qui semblaient presque vivantes. Au moment où ses doigts effleurèrent la surface, une décharge d'énergie le traversa, et des visions de mondes lointains et de créatures mystiques envahirent son esprit.</p>
+        
+        <p>À cet instant, Kael comprit que sa vie ne serait plus jamais la même. Une quête venait de commencer, une quête qui le mènerait aux confins du connu, à la rencontre de peuples oubliés et de magie ancienne.</p>
+    </div>
+    
+    <div class="reading-controls">
+        <button class="nav-btn prev-btn" id="prevChapter">
+            <i class="fas fa-chevron-left"></i> Précédent
+        </button>
+        <button class="nav-btn next-btn" id="nextChapter">
+            Suivant <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+</div>
 
         <!-- Customization Panel -->
         <div class="customization-panel" id="customizationPanel">
@@ -815,19 +879,15 @@
         <div class="nav-bar">
             <a href="#" class="nav-item active" data-page="homePage">
                 <i class="fas fa-home nav-icon"></i>
-                <span>Accueil</span>
             </a>
             <a href="#" class="nav-item" data-page="chaptersPage">
                 <i class="fas fa-list nav-icon"></i>
-                <span>Chapitres</span>
             </a>
             <a href="#" class="nav-item" data-page="readingPage">
                 <i class="fas fa-book nav-icon"></i>
-                <span>Lecture</span>
             </a>
             <a href="#" class="nav-item" id="customizeNav">
                 <i class="fas fa-paint-brush nav-icon"></i>
-                <span>Personnaliser</span>
             </a>
         </div>
     </div>
@@ -859,6 +919,8 @@
             
             // Current chapter tracking
             let currentChapter = 1;
+          let customTextColor = null;
+let customBgColor = null;
             const totalChapters = 40;
             
             // Generate chapters
@@ -1075,29 +1137,37 @@ function highlightSearchTerm(term) {
                 }
             });
             
-            themeButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // Remove all theme classes
-                    document.body.classList.remove('dark-theme', 'sepia-theme');
-                    
-                    // Add selected theme
-                    const theme = button.getAttribute('data-theme');
-                    if (theme !== 'default') {
-                        document.body.classList.add(`${theme}-theme`);
-                    }
-                    
-                    // Update active button
-                    themeButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    
-                    // Update theme toggle icon
-                    if (theme === 'dark') {
-                        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                    } else {
-                        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                    }
-                });
-            });
+           themeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // Remove all theme classes
+        document.body.classList.remove('dark-theme', 'sepia-theme');
+        
+        // Add selected theme
+        const theme = button.getAttribute('data-theme');
+        if (theme !== 'default') {
+            document.body.classList.add(`${theme}-theme`);
+        }
+        
+        // Réappliquer les couleurs personnalisées si elles existent
+        if (customTextColor) {
+            document.body.style.color = customTextColor;
+        }
+        if (customBgColor) {
+            document.body.style.backgroundColor = customBgColor;
+        }
+        
+        // Update active button
+        themeButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        
+        // Update theme toggle icon
+        if (theme === 'dark') {
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+    });
+});
             
             // Font size customization
             fontSizeSlider.addEventListener('input', () => {
@@ -1136,39 +1206,40 @@ function highlightSearchTerm(term) {
 const textColorButtons = document.querySelectorAll('.text-color');
 const bgColorButtons = document.querySelectorAll('.bg-color');
 
-// Écouteurs pour les couleurs de texte
 textColorButtons.forEach(button => {
     button.addEventListener('click', () => {
         textColorButtons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
-        document.body.style.color = button.getAttribute('data-color');
+        customTextColor = button.getAttribute('data-color');
+        document.body.style.color = customTextColor;
     });
 });
 
-// Écouteurs pour les couleurs de fond
+
 bgColorButtons.forEach(button => {
     button.addEventListener('click', () => {
         bgColorButtons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
-        document.body.style.backgroundColor = button.getAttribute('data-color');
+        customBgColor = button.getAttribute('data-color');
+        document.body.style.backgroundColor = customBgColor;
     });
 });
-            function updateChapterContent() {
-                chapterIndicator.textContent = `Chapitre ${currentChapter}: ${getChapterTitle(currentChapter)}`;
-                
-                // Update button states
-                prevChapterBtn.disabled = currentChapter === 1;
-                nextChapterBtn.disabled = currentChapter === totalChapters;
-                
-                // In a real app, you would load the actual chapter content here
-                // For demonstration, we'll just show placeholder content
-                contentElement.innerHTML = `
-                    <h3>Chapitre ${currentChapter}: ${getChapterTitle(currentChapter)}</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eu ultricies lacinia, nunc nisl aliquam nisl, eu aliquam nisl nunc eu nisl. Nullam auctor, nisl eu ultricies lacinia, nunc nisl aliquam nisl, eu aliquam nisl nunc eu nisl.</p>
-                    <p>Sed vitae nisl euismod, aliquam nisl eu, aliquam nisl. Sed vitae nisl euismod, aliquam nisl eu, aliquam nisl. Sed vitae nisl euismod, aliquam nisl eu, aliquam nisl.</p>
-                    <p>Nullam auctor, nisl eu ultricies lacinia, nunc nisl aliquam nisl, eu aliquam nisl nunc eu nisl. Nullam auctor, nisl eu ultricies lacinia, nunc nisl aliquam nisl, eu aliquam nisl nunc eu nisl.</p>
-                `;
-            }
+           function updateChapterContent() {
+    // Affiche seulement "Chapitre X" en haut
+    chapterIndicator.textContent = `Chapitre ${currentChapter}`;
+    
+    // Update button states
+    prevChapterBtn.disabled = currentChapter === 1;
+    nextChapterBtn.disabled = currentChapter === totalChapters;
+    
+    // Dans le contenu, affiche seulement le titre sans "Chapitre X:"
+    contentElement.innerHTML = `
+        <h3>${getChapterTitle(currentChapter)}</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eu ultricies lacinia, nunc nisl aliquam nisl, eu aliquam nisl nunc eu nisl. Nullam auctor, nisl eu ultricies lacinia, nunc nisl aliquam nisl, eu aliquam nisl nunc eu nisl.</p>
+        <p>Sed vitae nisl euismod, aliquam nisl eu, aliquam nisl. Sed vitae nisl euismod, aliquam nisl eu, aliquam nisl. Sed vitae nisl euismod, aliquam nisl eu, aliquam nisl.</p>
+        <p>Nullam auctor, nisl eu ultricies lacinia, nunc nisl aliquam nisl, eu aliquam nisl nunc eu nisl. Nullam auctor, nisl eu ultricies lacinia, nunc nisl aliquam nisl, eu aliquam nisl nunc eu nisl.</p>
+    `;
+}
             
             function getChapterTitle(chapterNumber) {
                 const titles = [
