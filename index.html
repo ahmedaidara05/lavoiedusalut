@@ -301,24 +301,27 @@
         }
 
         /* Customization Panel */
-        .customization-panel {
-            position: fixed;
-            bottom: -350px;
-            left: 0;
-            right: 0;
-            background: var(--card-bg);
-            border-radius: 20px 20px 0 0;
-            padding: 20px;
-            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
-            transition: var(--transition);
-            z-index: 1000;
-            height: 350px;
-        }
+     .customization-panel {
+    position: fixed;
+    bottom: -350px; /* Caché en dehors de l'écran */
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    border-radius: 20px 20px 0 0;
+    padding: 20px;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
+    transition: var(--transition);
+    z-index: 1000; /* Z-index élevé */
+    height: 350px;
+}
 
-        .customization-panel.open {
-            bottom: 0;
-            z-index: 1100;
-        }
+.customization-panel.open {
+    bottom: 0; /* Positionné tout en bas */
+}
+/* Assurer que le contenu est scrollable */
+.content-container {
+    max-height: 50vh; /* Réduit la hauteur maximale */
+}
 
         .panel-header {
             display: flex;
@@ -627,6 +630,7 @@
                         <option value="'Arial', sans-serif">Arial</option>
                     </select>
                 </div>
+              
             </div>
         </div>
 
