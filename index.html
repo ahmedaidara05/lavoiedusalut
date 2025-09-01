@@ -317,7 +317,16 @@
     box-shadow: none;        /* Pas d’ombre */
     z-index: 10;
 }
-
+.reading-controls .nav-btn {
+    background: transparent;    /* Totalement transparent */
+    border: none;              /* Supprime les bordures */
+    color: var(--text);        /* Garde la couleur du texte de ton thème */
+    font-size: 1rem;           /* Taille du texte */
+    font-weight: 600;          /* Texte légèrement en gras */
+    padding: 8px 14px;         /* Un peu d’espace pour cliquer confortablement */
+    cursor: pointer;          /* Curseur main */
+    transition: color 0.3s ease, transform 0.2s ease;
+}
         .nav-btn {
             background: rgba(0, 0, 0, 0.7);
             color: white;
