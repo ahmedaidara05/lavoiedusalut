@@ -301,7 +301,7 @@
             margin: 1.5em 0 0.8em 0;
             color: var(--text);
             border-bottom: 1px solid #d9c89e;
-            padding-bottom: 0.3em;
+            padding-bottom: 0.3em;.reading-header
             text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
         }
 
@@ -763,6 +763,70 @@
             opacity: 0.7;
             grid-column: 1 / -1;
         }
+      /* Fenêtre modale */
+.customization-modal {
+    display: none; /* Cachée par défaut */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* Contenu de la personnalisation */
+.customization-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    width: 320px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+/* Grille des images */
+.background-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* Style des images */
+.bg-option {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bg-option:hover {
+    transform: scale(1.05);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+
+/* Bouton fermer */
+#closeCustomization {
+    margin-top: 15px;
+    background: #444;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#closeCustomization:hover {
+    background: #222;
+}
+
     </style>
 </head>
 <body>
@@ -800,6 +864,7 @@
             <div class="chapters-grid" id="chaptersGrid">
             </div>
         </div>
+            <div class="content-container" id="contentContainer">
 
      <div class="page" id="readingPage">
             <div class="reading-header">
@@ -811,10 +876,11 @@
                     <i class="fas fa-sliders-h"></i>
                 </button>
             </div>
-            <div class="content-page">
-                <div class="content" id="chapterContent">
-                </div>
-            </div>
+            <div class="content-container" id="contentContainer">
+        <div class="content" id="chapterContent">
+            <p>Ton texte ici...</p>
+        </div>
+    </div>
             <div class="reading-controls">
                 <button class="nav-btn prev-btn" id="prevChapter">
                     <i class="fas fa-chevron-left"></i> Précédent
@@ -832,6 +898,7 @@
                     <i class="fas fa-times"></i>
                 </button>
             </div>
+          
             <div class="options-grid">
                 <div class="option-group">
                     <label class="option-label">Taille du texte</label>
@@ -871,15 +938,12 @@
                 </div>
                 <div class="option-group">
                     <label class="option-label">Couleur de fond</label>
-                    <div class="color-options">
-                        <button class="color-btn bg-color beige active" data-color="#f8f4e9"></button>
-                        <button class="color-btn bg-color white" data-color="#ffffff"></button>
-                        <button class="color-btn bg-color light-gray" data-color="#e2e8f0"></button>
-                        <button class="color-btn bg-color light-blue" data-color="#ebf8ff"></button>
-                        <button class="color-btn bg-color light-yellow" data-color="#fffff0"></button>
-                        <button class="color-btn bg-color light-green" data-color="#f0fff4"></button>
-                        <button class="color-btn bg-color light-pink" data-color="#fff5f5"></button>
-                    </div>
+                    <div class="background-options">
+      <img src="https://i.postimg.cc/DzTfTR3C/3.png" class="bg-option" data-bg="https://i.postimg.cc/DzTfTR3C/3.png" alt="Fond 1">
+      <img src="https://i.postimg.cc/nrcYwdLr/4.png" class="bg-option" data-bg="https://i.postimg.cc/nrcYwdLr/4.png" alt="Fond 2">
+      <img src="https://i.postimg.cc/j5CHrMfF/6.png" class="bg-option" data-bg="https://i.postimg.cc/j5CHrMfF/6.png" alt="Fond 3">
+      <img src="https://i.postimg.cc/13N0TVyG/5.png" class="bg-option" data-bg="https://i.postimg.cc/13N0TVyG/5.png" alt="Fond 4">
+    </div>
                 </div>
             </div>
         </div>
@@ -1317,5 +1381,44 @@
             updateFavoritesPage();
         });
     </script>
+  <script>
+const customizationBtn = document.getElementById("openCustomization");
+const customizationModal = document.getElementById("customizationModal");
+const closeCustomization = document.getElementById("closeCustomization");
+const bgOptions = document.querySelectorAll(".bg-option");
+const readingPage = document.getElementById("readingPage");
+
+// Ouvrir la fenêtre
+customizationBtn.addEventListener("click", () => {
+    customizationModal.style.display = "flex";
+});
+
+// Fermer la fenêtre
+closeCustomization.addEventListener("click", () => {
+    customizationModal.style.display = "none";
+});
+
+// Quand l'utilisateur clique sur une image
+bgOptions.forEach(option => {
+    option.addEventListener("click", () => {
+        const selectedBg = option.dataset.bg;
+        readingPage.querySelector(".content-container").style.backgroundImage = `url('${selectedBg}')`;
+
+        // Sauvegarde dans localStorage pour garder le fond même après rechargement
+        localStorage.setItem("readingBg", selectedBg);
+
+        customizationModal.style.display = "none";
+    });
+});
+
+// Restaurer le fond choisi à l'ouverture
+document.addEventListener("DOMContentLoaded", () => {
+    const savedBg = localStorage.getItem("readingBg");
+    if (savedBg) {
+        readingPage.querySelector(".content-container").style.backgroundImage = `url('${savedBg}')`;
+    }
+});
+</script>
+
 </body>
 </html>
