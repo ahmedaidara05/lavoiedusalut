@@ -284,16 +284,20 @@
             z-index: 0;
         }
 
-        .content {
-            font-family: var(--font-family) !important;
-            line-height: var(--line-height) !important;
-            font-size: var(--font-size) !important;
-            color: var(--text) !important;
-            text-align: justify !important;
-            position: relative;
-            z-index: 1;
-            transition: var(--transition);
-        }
+       .content {
+    font-family: var(--font-family) !important;
+    line-height: var(--line-height) !important;
+    font-size: var(--font-size) !important;
+    color: var(--text) !important;
+    text-align: justify !important;
+    position: relative;
+    z-index: 1;
+    transition: var(--transition);
+    padding: 20px 0;
+    max-height: 70vh;
+    overflow-y: auto;
+    background: transparent !important; /* Fond transparent */
+}
 
         .content p {
             margin-bottom: 1.5em !important;
@@ -319,12 +323,14 @@
             padding-bottom: 0.3em;
         }
 
-        .reading-page {
-            padding: 15px 40px 20px !important;
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 70px);
-        }
+       .reading-page {
+    padding: 15px 40px 20px !important;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 70px);
+    background: var(--light); /* Ajoutez cette ligne */
+    transition: background-color 0.3s ease; /* Transition fluide */
+}
 
         .reading-controls {
             display: flex;
@@ -1131,15 +1137,22 @@
                 });
             });
             
-            // Background color customization
-            bgColorButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    bgColorButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    customBgColor = button.getAttribute('data-color');
-                    document.documentElement.style.setProperty('--content-bg', customBgColor);
-                });
-            });
+           // Background color customization
+bgColorButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        bgColorButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        customBgColor = button.getAttribute('data-color');
+        
+        // Appliquer la couleur de fond à la page de lecture, pas au contenu
+        const readingPage = document.getElementById('readingPage');
+        readingPage.style.backgroundColor = customBgColor;
+        
+        // Réinitialiser les thèmes prédéfinis
+        document.body.classList.remove('dark-theme', 'sepia-theme');
+        themeButtons.forEach(btn => btn.classList.remove('active'));
+    });
+});
             
             // Chapter navigation
             prevChapterBtn.addEventListener('click', () => {
