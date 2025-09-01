@@ -1099,7 +1099,7 @@ for (let i = 1; i <= totalChapters; i++) {
         <div class="chapter-number">${i}</div>
         <div class="chapter-title">${getChapterTitle(i)}</div>
         <div class="favorite-icon" id="favorite-${i}">
-            ${favorites.includes(i) ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>'}
+            ${favorites.includes(i) ? '<i class="fas fa-bookmark"></i>' : '<i class="fas fa-bookmark"></i>'}
         </div>
     `;
     
@@ -1323,10 +1323,10 @@ function updateFavoriteIcon(chapterNumber) {
     if (heartIcon) {
         if (favorites.includes(chapterNumber)) {
             heartIcon.classList.add('active');
-            heartIcon.innerHTML = '<i class="fas fa-heart"></i>';
+            heartIcon.innerHTML = '<i class="fas fa-bookmark"></i>';
         } else {
             heartIcon.classList.remove('active');
-            heartIcon.innerHTML = '<i class="far fa-heart"></i>';
+            heartIcon.innerHTML = '<i class="fas fa-bookmark"></i>';
         }
     }
 }
@@ -1376,7 +1376,7 @@ function updateFavoritesPage() {
             <div class="chapter-number">${chapterNumber}</div>
             <div class="chapter-title">${getChapterTitle(chapterNumber)}</div>
             <div class="favorite-icon active" id="favorite-fav-${chapterNumber}">
-                <i class="fas fa-heart"></i>
+                <i class="fas fa-bookmark"></i>
             </div>
         `;
         
@@ -1405,9 +1405,9 @@ function updateFavoritesPage() {
     
     // Ajouter l'icône favoris dans l'en-tête
     const isFavorite = favorites.includes(currentChapter);
-    const heartIcon = isFavorite ? 
-        '<i class="fas fa-heart" style="color: var(--accent); margin-left: 10px; cursor: pointer;" id="header-favorite"></i>' :
-        '<i class="far fa-heart" style="margin-left: 10px; cursor: pointer;" id="header-favorite"></i>';
+   const heartIcon = isFavorite ? 
+    '<i class="fas fa-bookmark" style="color: var(--accent); margin-left: 10px; cursor: pointer;" id="header-favorite"></i>' :
+    '<i class="far fa-bookmark" style="margin-left: 10px; cursor: pointer;" id="header-favorite"></i>';
     
     chapterIndicator.innerHTML = `Chapitre ${currentChapter} ${heartIcon}`;
     
@@ -1420,8 +1420,7 @@ function updateFavoritesPage() {
                 
                 // Mettre à jour l'icône dans l'en-tête
                 const isNowFavorite = favorites.includes(currentChapter);
-                headerFavorite.className = isNowFavorite ? 'fas fa-heart' : 'far fa-heart';
-                headerFavorite.style.color = isNowFavorite ? 'var(--accent)' : '';
+headerFavorite.className = isNowFavorite ? 'fas fa-bookmark' : 'far fa-bookmark';                headerFavorite.style.color = isNowFavorite ? 'var(--accent)' : '';
             });
         }
     }, 0);
