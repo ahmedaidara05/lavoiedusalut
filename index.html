@@ -21,7 +21,6 @@
             --line-height: 1.7;
             --font-family: 'Cormorant Garamond', 'Georgia', serif;
             --content-bg: #f8f4e9;
-            --page-background: url('https://i.postimg.cc/DzTfTR3C/3.png');
         }
 
         .dark-theme {
@@ -240,8 +239,7 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            background: url('https://i.postimg.cc/DzTfTR3C/3.png') no-repeat center/cover fixed;
-            transition: background-color 0.3s ease;
+            transition: none;
             overflow-y: auto;
         }
 
@@ -262,6 +260,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
         }
 
         .content-page {
@@ -278,6 +277,7 @@
             z-index: 1;
             transition: var(--transition);
             padding: 20px;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
         }
 
         .content p {
@@ -302,6 +302,7 @@
             color: var(--text);
             border-bottom: 1px solid #d9c89e;
             padding-bottom: 0.3em;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
         }
 
         .reading-controls {
@@ -321,6 +322,7 @@
             font-size: 1.1rem;
             font-weight: 500;
             transition: var(--transition);
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
         }
 
         .nav-btn:hover {
@@ -740,31 +742,6 @@
             opacity: 0.7;
             grid-column: 1 / -1;
         }
-
-        .background-options {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .background-btn {
-            padding: 8px;
-            border: 2px solid transparent;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-            background-color: #f5f5f5;
-            text-align: center;
-        }
-
-        .background-btn.active {
-            border-color: var(--accent);
-            transform: scale(1.05);
-        }
-
-        .background-btn span {
-            font-size: 0.8rem;
-        }
     </style>
 </head>
 <body>
@@ -803,7 +780,7 @@
             </div>
         </div>
 
-        <div class="page" id="readingPage">
+        <div class="page" id="readingPage" style="background: url('https://i.postimg.cc/DzTfTR3C/3.png') no-repeat center/cover fixed; padding: 15px 40px 20px; display: flex; flex-direction: column; height: 100vh; overflow-y: auto;">
             <div class="reading-header">
                 <button class="header-btn" id="backToChapters">
                     <i class="fas fa-arrow-left"></i>
@@ -835,23 +812,6 @@
                 </button>
             </div>
             <div class="options-grid">
-                <div class="option-group">
-                    <label class="option-label">Fond de page</label>
-                    <div class="background-options">
-                        <button class="background-btn parchment active" data-bg="parchment">
-                            <span>Parchemin</span>
-                        </button>
-                        <button class="background-btn aged-paper" data-bg="aged-paper">
-                            <span>Papier vieilli</span>
-                        </button>
-                        <button class="background-btn scroll" data-bg="scroll">
-                            <span>Parchemin déroulé</span>
-                        </button>
-                        <button class="background-btn modern" data-bg="modern">
-                            <span>Moderne</span>
-                        </button>
-                    </div>
-                </div>
                 <div class="option-group">
                     <label class="option-label">Taille du texte</label>
                     <div class="slider-container">
@@ -1025,14 +985,6 @@
                 { chapter: 40, title: "L'infini", text: "Kael explore l'infini des possibles." }
             ];
 
-            const backgroundOptions = [
-                { id: 'parchment', name: 'Parchemin', url: 'https://i.postimg.cc/DzTfTR3C/3.png' },
-                { id: 'aged-paper', name: 'Papier vieilli', url: 'https://example.com/aged-paper.png' },
-                { id: 'scroll', name: 'Parchemin déroulé', url: 'https://example.com/scroll.png' },
-                { id: 'modern', name: 'Moderne', url: 'https://example.com/modern-paper.png' }
-            ];
-            let currentBackground = 'parchment';
-
             for (let i = 1; i <= totalChapters; i++) {
                 const chapterCard = document.createElement('div');
                 chapterCard.className = 'chapter-card';
@@ -1157,33 +1109,6 @@
                 });
             });
 
-            function setBackground(backgroundId) {
-                const selectedBg = backgroundOptions.find(bg => bg.id === backgroundId);
-                if (selectedBg) {
-                    currentBackground = backgroundId;
-                    document.documentElement.style.setProperty('--page-background', `url(${selectedBg.url})`);
-                    document.querySelectorAll('.background-btn').forEach(btn => {
-                        btn.classList.remove('active');
-                    });
-                    document.querySelector(`.background-btn[data-bg="${backgroundId}"]`).classList.add('active');
-                    localStorage.setItem('pageBackground', backgroundId);
-                }
-            }
-
-            const savedBackground = localStorage.getItem('pageBackground');
-            if (savedBackground) {
-                setBackground(savedBackground);
-            } else {
-                setBackground('parchment');
-            }
-
-            document.querySelectorAll('.background-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    const bgId = button.getAttribute('data-bg');
-                    setBackground(bgId);
-                });
-            });
-
             function toggleFavorite(chapterNumber) {
                 const index = favorites.indexOf(chapterNumber);
                 if (index === -1) {
@@ -1255,6 +1180,10 @@
                 });
             }
 
+            function getChapterTitle(chapterNumber) {
+                return chapterContents[chapterNumber - 1].title || `Chapitre ${chapterNumber}`;
+            }
+
             prevChapterBtn.addEventListener('click', () => {
                 if (currentChapter > 1) {
                     currentChapter--;
@@ -1280,10 +1209,6 @@
                     <h3>${chapter.title}</h3>
                     <p>${chapter.text}</p>
                 `;
-            }
-
-            function getChapterTitle(chapterNumber) {
-                return chapterContents[chapterNumber - 1].title || `Chapitre ${chapterNumber}`;
             }
 
             searchBtn.addEventListener('click', () => {
@@ -1368,6 +1293,7 @@
             }
 
             updateChapterContent();
+            updateFavoritesPage();
         });
     </script>
 </body>
