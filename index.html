@@ -22,7 +22,6 @@
             --font-family: 'Cormorant Garamond', 'Georgia', serif;
             --content-bg: #f8f4e9;
             --page-background: url('https://i.postimg.cc/DzTfTR3C/3.png');
-
         }
 
         .dark-theme {
@@ -102,7 +101,7 @@
         }
 
         .header-btn {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.7);
             border: none;
             width: 40px;
             height: 40px;
@@ -116,7 +115,7 @@
         }
 
         .header-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.8);
             transform: scale(1.1);
         }
 
@@ -240,9 +239,10 @@
             padding: 15px 40px 20px;
             display: flex;
             flex-direction: column;
-            height: calc(100vh - 70px);
-            background: var(--light);
+            height: 100vh;
+            background: url('https://i.postimg.cc/DzTfTR3C/3.png') no-repeat center/cover fixed;
             transition: background-color 0.3s ease;
+            overflow-y: auto;
         }
 
         .reading-header {
@@ -250,6 +250,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            z-index: 10;
         }
 
         .chapter-indicator {
@@ -263,27 +264,10 @@
             gap: 10px;
         }
 
-     .content-container {
-  background: var(--page-background) center/cover no-repeat;
-  /* Supprimez ou commentez l'ancienne propriété background */
-  /* background: var(--content-bg); */
-}
+        .content-page {
+            flex: 1;
+        }
 
-       .content-container:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-      linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-  background-size: 20px 20px;
-  pointer-events: none;
-  opacity: 0.4;
-  z-index: 0;
-}
         .content {
             font-family: var(--font-family);
             line-height: var(--line-height);
@@ -293,9 +277,7 @@
             position: relative;
             z-index: 1;
             transition: var(--transition);
-            padding: 20px 0;
-            flex: 1;
-            overflow-y: visible;
+            padding: 20px;
         }
 
         .content p {
@@ -315,7 +297,7 @@
         .content h3 {
             font-family: 'Cormorant Garamond', serif;
             font-weight: 600;
-            font-size: 1.8rem;
+            font-size: calc(var(--font-size) * 1.2);
             margin: 1.5em 0 0.8em 0;
             color: var(--text);
             border-bottom: 1px solid #d9c89e;
@@ -327,11 +309,12 @@
             justify-content: space-between;
             align-items: center;
             margin-top: 30px;
+            z-index: 10;
         }
 
         .nav-btn {
-            background: transparent;
-            color: var(--text);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
             border: 1px solid #d9c89e;
             padding: 10px 25px;
             font-family: 'Cormorant Garamond', serif;
@@ -341,7 +324,7 @@
         }
 
         .nav-btn:hover {
-            background: rgba(197, 162, 51, 0.1);
+            background: rgba(0, 0, 0, 0.8);
             transform: translateY(-2px);
         }
 
@@ -362,20 +345,20 @@
             margin-left: 8px;
         }
 
-     .customization-panel {
-        position: fixed;
-        bottom: -350px; /* Caché par défaut */
-        left: 0;
-        right: 0;
-        background: var(--card-bg);
-        border-radius: 20px 20px 0 0;
-        padding: 20px;
-        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
-        transition: var(--transition);
-        z-index: 1000;
-        height: 350px;
-        overflow-y: auto;
-    }
+        .customization-panel {
+            position: fixed;
+            bottom: -350px;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border-radius: 20px 20px 0 0;
+            padding: 20px;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
+            transition: var(--transition);
+            z-index: 1000;
+            height: 350px;
+            overflow-y: auto;
+        }
 
         .customization-panel.open {
             bottom: 0;
@@ -655,7 +638,7 @@
         .text-color.dark-red { background-color: #7b341e; }
         .text-color.gray { background-color: #4a5568; }
 
-        .bg-color.beige { background-color: #d2c9a3; }
+        .bg-color.beige { background-color: #f8f4e9; }
         .bg-color.white { background-color: #ffffff; border: 1px solid #ccc; }
         .bg-color.light-gray { background-color: #e2e8f0; }
         .bg-color.light-blue { background-color: #ebf8ff; }
@@ -695,18 +678,8 @@
                 grid-template-columns: 1fr;
             }
             
-          .reading-page {
-  padding: 15px 40px 20px;
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 70px);
-  background: transparent; /* Changement ici */
-  transition: background-color 0.3s ease;
-}
-
-            
-            .content-container {
-                padding: 20px;
+            .reading-page {
+                padding: 15px 20px;
             }
         }
 
@@ -726,10 +699,6 @@
             
             .chapter-number {
                 font-size: 1.5rem;
-            }
-            
-            .content-container {
-                padding: 15px;
             }
             
             .customization-panel {
@@ -771,83 +740,31 @@
             opacity: 0.7;
             grid-column: 1 / -1;
         }
-  .background-options {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
 
-.background-option {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  border: 2px solid transparent;
-  cursor: pointer;
-  background-size: cover;
-}
+        .background-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
-.background-option.active {
-  border-color: var(--accent);
-}
+        .background-btn {
+            padding: 8px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: #f5f5f5;
+            text-align: center;
+        }
 
-.option-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-}
-.background-btn {
-  padding: 8px;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: var(--transition);
-  background-color: #f5f5f5;
-  text-align: center;
-}
+        .background-btn.active {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
 
-.background-btn.active {
-  border-color: var(--accent);
-  transform: scale(1.05);
-}
-
-.background-btn span {
-  font-size: 0.8rem;
-}
-
-/* Modification pour le conteneur de contenu avec image de fond */
-.content-container {
-  background-image: var(--page-background, url('URL_DE_VOTRE_IMAGE_PAR_DEFAUT'));
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  border-radius: 5px;
-  padding: 40px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 
-              inset 0 0 0 1px rgba(255, 255, 255, 0.8),
-              inset 0 0 20px rgba(0, 0, 0, 0.05);
-  margin-bottom: 30px;
-  max-height: 60vh;
-  overflow-y: auto;
-  position: relative;
-  border: 1px solid #d9c89e;
-  transition: var(--transition);
-}
-
-/* Pour préserver l'effet de quadrillage par-dessus l'image */
-.content-container:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-      linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-  background-size: 20px 20px;
-  pointer-events: none;
-  opacity: 0.4;
-  z-index: 0;
-}
+        .background-btn span {
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body>
@@ -896,14 +813,10 @@
                     <i class="fas fa-sliders-h"></i>
                 </button>
             </div>
-           <div class="content-container">
-  <div class="content-page">
-    <div class="content" id="chapterContent">
-      <!-- Votre contenu ici -->
-    </div>
-  </div>
-  <!-- Des div.content-page supplémentaires seront ajoutées dynamiquement si besoin -->
-</div>
+            <div class="content-page">
+                <div class="content" id="chapterContent">
+                </div>
+            </div>
             <div class="reading-controls">
                 <button class="nav-btn prev-btn" id="prevChapter">
                     <i class="fas fa-chevron-left"></i> Précédent
@@ -922,28 +835,27 @@
                 </button>
             </div>
             <div class="options-grid">
-               <div class="option-group">
-  <label class="option-label">Fond de page</label>
-  <div class="background-options">
-    <button class="background-btn parchment active" data-bg="parchment">
-      <span>Parchemin</span>
-    </button>
-    <button class="background-btn aged-paper" data-bg="aged-paper">
-      <span>Papier vieilli</span>
-    </button>
-    <button class="background-btn scroll" data-bg="scroll">
-      <span>Parchemin déroulé</span>
-    </button>
-    <button class="background-btn modern" data-bg="modern">
-      <span>Moderne</span>
-    </button>
-  </div>
-</div>
+                <div class="option-group">
+                    <label class="option-label">Fond de page</label>
+                    <div class="background-options">
+                        <button class="background-btn parchment active" data-bg="parchment">
+                            <span>Parchemin</span>
+                        </button>
+                        <button class="background-btn aged-paper" data-bg="aged-paper">
+                            <span>Papier vieilli</span>
+                        </button>
+                        <button class="background-btn scroll" data-bg="scroll">
+                            <span>Parchemin déroulé</span>
+                        </button>
+                        <button class="background-btn modern" data-bg="modern">
+                            <span>Moderne</span>
+                        </button>
+                    </div>
+                </div>
                 <div class="option-group">
                     <label class="option-label">Taille du texte</label>
                     <div class="slider-container">
-                        <!-- Dans la section Personnalisation, modifiez l'input pour la taille du texte -->
-<input type="range" min="14" max="50" value="18" class="slider" id="fontSize">
+                        <input type="range" min="14" max="50" value="18" class="slider" id="fontSize">
                         <span class="value-display" id="fontSizeValue">18px</span>
                     </div>
                 </div>
@@ -1051,7 +963,6 @@
             const lineHeightValue = document.getElementById('lineHeightValue');
             const fontFamilySelect = document.getElementById('fontFamily');
             const contentElement = document.getElementById('chapterContent');
-            const contentContainer = document.querySelector('.content-container');
             const chaptersGrid = document.getElementById('chaptersGrid');
             const prevChapterBtn = document.getElementById('prevChapter');
             const nextChapterBtn = document.getElementById('nextChapter');
@@ -1113,14 +1024,15 @@
                 { chapter: 39, title: "Le destin", text: "Kael fait face à son destin final." },
                 { chapter: 40, title: "L'infini", text: "Kael explore l'infini des possibles." }
             ];
-// Après la déclaration des variables, ajoutez :
-const backgroundOptions = [
-  { id: 'parchment', name: 'Parchemin', url: 'https://i.postimg.cc/DzTfTR3C/3.png' },
-  { id: 'aged-paper', name: 'Papier vieilli', url: 'https://example.com/aged-paper.png' },
-  { id: 'scroll', name: 'Parchemin déroulé', url: 'https://example.com/scroll.png' },
-  { id: 'modern', name: 'Moderne', url: 'https://example.com/modern-paper.png' }
-];
-let currentBackground = 'parchment';
+
+            const backgroundOptions = [
+                { id: 'parchment', name: 'Parchemin', url: 'https://i.postimg.cc/DzTfTR3C/3.png' },
+                { id: 'aged-paper', name: 'Papier vieilli', url: 'https://example.com/aged-paper.png' },
+                { id: 'scroll', name: 'Parchemin déroulé', url: 'https://example.com/scroll.png' },
+                { id: 'modern', name: 'Moderne', url: 'https://example.com/modern-paper.png' }
+            ];
+            let currentBackground = 'parchment';
+
             for (let i = 1; i <= totalChapters; i++) {
                 const chapterCard = document.createElement('div');
                 chapterCard.className = 'chapter-card';
@@ -1207,15 +1119,14 @@ let currentBackground = 'parchment';
                     themeToggle.innerHTML = theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
                 });
             });
-// Dans le code JavaScript, modifiez l'écouteur d'événements pour le curseur de taille
-fontSizeSlider.addEventListener('input', () => {
-    const size = fontSizeSlider.value;
-    fontSizeValue.textContent = `${size}px`;
-    document.documentElement.style.setProperty('--font-size', `${size}px`);
-    
-    // Ajoutez cette ligne pour forcer la mise à jour
-    contentElement.style.fontSize = `${size}px`;
-});
+
+            fontSizeSlider.addEventListener('input', () => {
+                const size = fontSizeSlider.value;
+                fontSizeValue.textContent = `${size}px`;
+                document.documentElement.style.setProperty('--font-size', `${size}px`);
+                contentElement.style.fontSize = `${size}px`;
+            });
+
             lineHeightSlider.addEventListener('input', () => {
                 const height = lineHeightSlider.value;
                 lineHeightValue.textContent = height;
@@ -1240,9 +1151,36 @@ fontSizeSlider.addEventListener('input', () => {
                     bgColorButtons.forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
                     customBgColor = button.getAttribute('data-color');
-                    contentContainer.style.backgroundColor = customBgColor;
+                    document.documentElement.style.setProperty('--content-bg', customBgColor);
                     document.body.classList.remove('dark-theme', 'sepia-theme');
                     themeButtons.forEach(btn => btn.classList.remove('active'));
+                });
+            });
+
+            function setBackground(backgroundId) {
+                const selectedBg = backgroundOptions.find(bg => bg.id === backgroundId);
+                if (selectedBg) {
+                    currentBackground = backgroundId;
+                    document.documentElement.style.setProperty('--page-background', `url(${selectedBg.url})`);
+                    document.querySelectorAll('.background-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    document.querySelector(`.background-btn[data-bg="${backgroundId}"]`).classList.add('active');
+                    localStorage.setItem('pageBackground', backgroundId);
+                }
+            }
+
+            const savedBackground = localStorage.getItem('pageBackground');
+            if (savedBackground) {
+                setBackground(savedBackground);
+            } else {
+                setBackground('parchment');
+            }
+
+            document.querySelectorAll('.background-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const bgId = button.getAttribute('data-bg');
+                    setBackground(bgId);
                 });
             });
 
@@ -1284,39 +1222,7 @@ fontSizeSlider.addEventListener('input', () => {
                 document.body.appendChild(toast);
                 setTimeout(() => document.body.removeChild(toast), 3000);
             }
-// Après la définition des backgroundOptions, ajoutez :
-function setBackground(backgroundId) {
-  const selectedBg = backgroundOptions.find(bg => bg.id === backgroundId);
-  if (selectedBg) {
-    currentBackground = backgroundId;
-    document.documentElement.style.setProperty('--page-background', `url(${selectedBg.url})`);
-    
-    // Mettre à jour l'interface
-    document.querySelectorAll('.background-btn').forEach(btn => {
-      btn.classList.remove('active');
-    });
-    document.querySelector(`.background-btn[data-bg="${backgroundId}"]`).classList.add('active');
-    
-    // Sauvegarder le choix
-    localStorage.setItem('pageBackground', backgroundId);
-  }
-}
 
-// Au chargement de la page, restaurez le fond choisi
-const savedBackground = localStorage.getItem('pageBackground');
-if (savedBackground) {
-  setBackground(savedBackground);
-} else {
-  setBackground('parchment'); // Valeur par défaut
-}
-
-// Ajoutez les écouteurs d'événements pour les boutons de fond
-document.querySelectorAll('.background-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    const bgId = button.getAttribute('data-bg');
-    setBackground(bgId);
-  });
-});
             function updateFavoritesPage() {
                 const favoritesGrid = document.getElementById('favoritesGrid');
                 if (favorites.length === 0) {
