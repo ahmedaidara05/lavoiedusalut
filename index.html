@@ -734,7 +734,14 @@
             transform: scale(1.2);
             color: var(--accent);
         }
-
+#readingPage.active {
+    background: url('https://i.postimg.cc/DzTfTR3C/3.png') no-repeat center/cover fixed;
+    padding: 15px 40px 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+}
         .no-favorites {
             text-align: center;
             padding: 40px;
@@ -780,7 +787,7 @@
             </div>
         </div>
 
-        <div class="page" id="readingPage" style="background: url('https://i.postimg.cc/DzTfTR3C/3.png') no-repeat center/cover fixed; padding: 15px 40px 20px; display: flex; flex-direction: column; height: 100vh; overflow-y: auto;">
+     <div class="page" id="readingPage">
             <div class="reading-header">
                 <button class="header-btn" id="backToChapters">
                     <i class="fas fa-arrow-left"></i>
