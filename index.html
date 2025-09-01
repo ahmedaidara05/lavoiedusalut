@@ -787,6 +787,71 @@
     opacity: 0.7;
     grid-column: 1 / -1;
 }
+      /* Style pour les cartes de chapitre */
+.chapter-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative; /* Ajoutez cette ligne */
+}
+
+/* Style pour l'icône favoris */
+.favorite-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.2rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 5;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+}
+
+.favorite-icon.active {
+    color: var(--accent);
+}
+
+.favorite-icon:hover {
+    transform: scale(1.2);
+    color: var(--accent);
+}
+
+/* Style pour l'icône favoris dans l'en-tête */
+.chapter-indicator {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem !important;
+    font-weight: 600;
+    color: var(--text) !important;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-favorite {
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.header-favorite.active {
+    color: var(--accent);
+}
+
+.header-favorite:hover {
+    transform: scale(1.2);
+}
     </style>
 </head>
 <body>
@@ -947,19 +1012,15 @@
         <div class="nav-bar">
             <a href="#" class="nav-item active" data-page="homePage">
                 <i class="fas fa-home nav-icon"></i>
-                <span>Accueil</span>
             </a>
             <a href="#" class="nav-item" data-page="chaptersPage">
                 <i class="fas fa-list nav-icon"></i>
-                <span>Chapitres</span>
             </a>
             <a href="#" class="nav-item" data-page="readingPage">
                 <i class="fas fa-book nav-icon"></i>
-                <span>Lecture</span>
             </a>
             <a href="#" class="nav-item" data-page="favoritesPage">
-        <i class="fas fa-heart nav-icon"></i>
-        <span>Favoris</span>
+        <i class="fas fa-bookmark nav-icon"></i>
     </a>
         </div>
     </div>
@@ -1030,20 +1091,33 @@
             const totalChapters = 40;
             
             // Generate chapters
-            for (let i = 1; i <= totalChapters; i++) {
-                const chapterCard = document.createElement('div');
-                chapterCard.className = 'chapter-card';
-                chapterCard.innerHTML = `
-                    <div class="chapter-number">${i}</div>
-                    <div class="chapter-title">${getChapterTitle(i)}</div>
-                `;
-                chapterCard.addEventListener('click', () => {
-                    currentChapter = i;
-                    updateChapterContent();
-                    showPage('readingPage');
-                });
-                chaptersGrid.appendChild(chapterCard);
-            }
+         // Generate chapters
+for (let i = 1; i <= totalChapters; i++) {
+    const chapterCard = document.createElement('div');
+    chapterCard.className = 'chapter-card';
+    chapterCard.innerHTML = `
+        <div class="chapter-number">${i}</div>
+        <div class="chapter-title">${getChapterTitle(i)}</div>
+        <div class="favorite-icon" id="favorite-${i}">
+            ${favorites.includes(i) ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>'}
+        </div>
+    `;
+    
+    chapterCard.addEventListener('click', () => {
+        currentChapter = i;
+        updateChapterContent();
+        showPage('readingPage');
+    });
+    
+    // Ajouter l'événement pour le cœur
+    const favIcon = chapterCard.querySelector('.favorite-icon');
+    favIcon.addEventListener('click', (e) => {
+        e.stopPropagation(); // Empêcher le déclenchement du click sur la carte
+        toggleFavorite(i);
+    });
+    
+    chaptersGrid.appendChild(chapterCard);
+}
             
             // Navigation functions
             function showPage(pageId) {
@@ -1219,6 +1293,9 @@ bgColorButtons.forEach(button => {
                 }
             });
             // Ajoutez cette fonction pour gérer les favoris
+// Au début de votre script, ajoutez:
+
+// Ajoutez cette fonction pour gérer les favoris
 function toggleFavorite(chapterNumber) {
     const index = favorites.indexOf(chapterNumber);
     
@@ -1275,7 +1352,7 @@ function showNotification(message) {
     // Supprimer après 3 secondes
     setTimeout(() => {
         document.body.removeChild(toast);
-    }, 2000);
+    }, 3000);
 }
 
 // Fonction pour mettre à jour la page des favoris
@@ -1319,7 +1396,7 @@ function updateFavoritesPage() {
         favoritesGrid.appendChild(chapterCard);
     });
 }
-          function updateChapterContent() {
+      function updateChapterContent() {
     chapterIndicator.textContent = `Chapitre ${currentChapter}`;
     
     // Update button states
