@@ -287,7 +287,7 @@
             z-index: 0;
         }
 
-       .content {
+   .content {
     font-family: var(--font-family) !important;
     line-height: var(--line-height) !important;
     font-size: var(--font-size) !important;
@@ -297,9 +297,12 @@
     z-index: 1;
     transition: var(--transition);
     padding: 20px 0;
-    max-height: 70vh;
-    overflow-y: auto;
-    background: transparent !important; /* Fond transparent */
+    /* SUPPRIMEZ ces propriétés : */
+    /* max-height: 70vh; */
+    /* overflow-y: auto; */
+    /* REMPLACEZ par : */
+    flex: 1; /* Prend tout l'espace disponible */
+    overflow-y: visible; /* Permet le défilement normal */
 }
 
         .content p {
@@ -375,25 +378,26 @@
             margin-left: 8px;
         }
 
-        /* Customization Panel */
-        .customization-panel {
-            position: fixed;
-            bottom: -350px;
-            left: 0;
-            right: 0;
-            background: var(--card-bg);
-            border-radius: 20px 20px 0 0;
-            padding: 20px;
-            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
-            transition: var(--transition);
-            z-index: 1000;
-            height: 350px;
-            overflow-y: auto;
-        }
+      .customization-panel {
+    position: fixed;
+    bottom: -350px; /* Caché en dehors de l'écran */
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    border-radius: 20px 20px 0 0;
+    padding: 20px;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
+    transition: var(--transition);
+    z-index: 1000;
+    height: 350px;
+    overflow-y: auto;
+    display: none; /* Ajoutez cette ligne pour le cacher complètement */
+}
 
-        .customization-panel.open {
-            bottom: 0;
-        }
+      .customization-panel.open {
+    bottom: 0; /* Positionné tout en bas */
+    display: block; /* Ajoutez cette ligne pour l'afficher quand ouvert */
+}
 
         .panel-header {
             display: flex;
@@ -714,9 +718,15 @@
                 grid-template-columns: 1fr;
             }
             
-            .reading-page {
-                padding: 15px 20px 20px !important;
-            }
+           .reading-page {
+    padding: 15px 20px 70px !important; /* Ajustement du padding */
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 70px);
+    background: var(--light);
+    transition: background-color 0.3s ease;
+    overflow: hidden; /* Empêche le double défilement */
+}
             
             .content-container {
                 padding: 20px !important;
