@@ -759,6 +759,34 @@
                 height: 380px;
             }
         }
+      /* Style pour l'icône favoris */
+.favorite-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 5;
+}
+
+.favorite-icon.active {
+    color: var(--accent);
+}
+
+.favorite-icon:hover {
+    transform: scale(1.2);
+}
+
+/* Style pour la page des favoris */
+.no-favorites {
+    text-align: center;
+    padding: 40px;
+    color: var(--text);
+    opacity: 0.7;
+    grid-column: 1 / -1;
+}
     </style>
 </head>
 <body>
@@ -907,7 +935,14 @@
                 </div>
             </div>
         </div>
-
+<!-- Favorites Page -->
+<div class="page" id="favoritesPage">
+    <h2>Vos chapitres favoris</h2>
+    <div class="chapters-grid" id="favoritesGrid">
+        <!-- Les favoris seront générés par JavaScript -->
+        <div class="no-favorites">Aucun chapitre favori pour le moment</div>
+    </div>
+</div>
         <!-- Navigation Bar -->
         <div class="nav-bar">
             <a href="#" class="nav-item active" data-page="homePage">
@@ -922,10 +957,10 @@
                 <i class="fas fa-book nav-icon"></i>
                 <span>Lecture</span>
             </a>
-            <a href="#" class="nav-item" id="customizeNav">
-                <i class="fas fa-paint-brush nav-icon"></i>
-                <span>Personnaliser</span>
-            </a>
+            <a href="#" class="nav-item" data-page="favoritesPage">
+        <i class="fas fa-heart nav-icon"></i>
+        <span>Favoris</span>
+    </a>
         </div>
     </div>
 
@@ -990,6 +1025,8 @@
             let currentChapter = 1;
             let customTextColor = null;
             let customBgColor = null;
+          let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
             const totalChapters = 40;
             
             // Generate chapters
@@ -1181,24 +1218,146 @@ bgColorButtons.forEach(button => {
                     updateChapterContent();
                 }
             });
-            
-            function updateChapterContent() {
-                chapterIndicator.textContent = `Chapitre ${currentChapter}`;
+            // Ajoutez cette fonction pour gérer les favoris
+function toggleFavorite(chapterNumber) {
+    const index = favorites.indexOf(chapterNumber);
+    
+    if (index === -1) {
+        // Ajouter aux favoris
+        favorites.push(chapterNumber);
+        showNotification('Chapitre ajouté aux favoris');
+    } else {
+        // Retirer des favoris
+        favorites.splice(index, 1);
+        showNotification('Chapitre retiré des favoris');
+    }
+    
+    // Sauvegarder dans le localStorage
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    
+    // Mettre à jour l'affichage
+    updateFavoriteIcon(chapterNumber);
+    updateFavoritesPage();
+}
+
+// Fonction pour mettre à jour l'icône favoris
+function updateFavoriteIcon(chapterNumber) {
+    const heartIcon = document.getElementById(`favorite-${chapterNumber}`);
+    if (heartIcon) {
+        if (favorites.includes(chapterNumber)) {
+            heartIcon.classList.add('active');
+            heartIcon.innerHTML = '<i class="fas fa-heart"></i>';
+        } else {
+            heartIcon.classList.remove('active');
+            heartIcon.innerHTML = '<i class="far fa-heart"></i>';
+        }
+    }
+}
+
+// Fonction pour afficher une notification
+function showNotification(message) {
+    // Créer une notification toast
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.position = 'fixed';
+    toast.style.bottom = '80px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.backgroundColor = 'var(--primary)';
+    toast.style.color = 'white';
+    toast.style.padding = '10px 20px';
+    toast.style.borderRadius = '25px';
+    toast.style.zIndex = '1000';
+    toast.style.boxShadow = '0 3px 10px rgba(0, 0, 0, 0.2)';
+    
+    document.body.appendChild(toast);
+    
+    // Supprimer après 3 secondes
+    setTimeout(() => {
+        document.body.removeChild(toast);
+    }, 2000);
+}
+
+// Fonction pour mettre à jour la page des favoris
+function updateFavoritesPage() {
+    const favoritesGrid = document.getElementById('favoritesGrid');
+    
+    if (favorites.length === 0) {
+        favoritesGrid.innerHTML = '<div class="no-favorites">Aucun chapitre favori pour le moment</div>';
+        return;
+    }
+    
+    favoritesGrid.innerHTML = '';
+    
+    // Trier les favoris par ordre croissant
+    const sortedFavorites = [...favorites].sort((a, b) => a - b);
+    
+    sortedFavorites.forEach(chapterNumber => {
+        const chapterCard = document.createElement('div');
+        chapterCard.className = 'chapter-card';
+        chapterCard.innerHTML = `
+            <div class="chapter-number">${chapterNumber}</div>
+            <div class="chapter-title">${getChapterTitle(chapterNumber)}</div>
+            <div class="favorite-icon active" id="favorite-fav-${chapterNumber}">
+                <i class="fas fa-heart"></i>
+            </div>
+        `;
+        
+        chapterCard.addEventListener('click', () => {
+            currentChapter = chapterNumber;
+            updateChapterContent();
+            showPage('readingPage');
+        });
+        
+        // Ajouter l'événement pour le cœur des favoris
+        const favIcon = chapterCard.querySelector('.favorite-icon');
+        favIcon.addEventListener('click', (e) => {
+            e.stopPropagation(); // Empêcher le déclenchement du click sur la carte
+            toggleFavorite(chapterNumber);
+        });
+        
+        favoritesGrid.appendChild(chapterCard);
+    });
+}
+          function updateChapterContent() {
+    chapterIndicator.textContent = `Chapitre ${currentChapter}`;
+    
+    // Update button states
+    prevChapterBtn.disabled = currentChapter === 1;
+    nextChapterBtn.disabled = currentChapter === totalChapters;
+    
+    // Ajouter l'icône favoris dans l'en-tête
+    const isFavorite = favorites.includes(currentChapter);
+    const heartIcon = isFavorite ? 
+        '<i class="fas fa-heart" style="color: var(--accent); margin-left: 10px; cursor: pointer;" id="header-favorite"></i>' :
+        '<i class="far fa-heart" style="margin-left: 10px; cursor: pointer;" id="header-favorite"></i>';
+    
+    chapterIndicator.innerHTML = `Chapitre ${currentChapter} ${heartIcon}`;
+    
+    // Ajouter l'événement au cœur de l'en-tête
+    setTimeout(() => {
+        const headerFavorite = document.getElementById('header-favorite');
+        if (headerFavorite) {
+            headerFavorite.addEventListener('click', () => {
+                toggleFavorite(currentChapter);
                 
-                // Update button states
-                prevChapterBtn.disabled = currentChapter === 1;
-                nextChapterBtn.disabled = currentChapter === totalChapters;
-                
-                // Update content
-                contentElement.innerHTML = `
-                    <h3>${getChapterTitle(currentChapter)}</h3>
-                    <p>Il était une fois, dans un monde lointain, une aventure qui allait changer le cours de l'histoire. Le soleil se levait à peine sur les collines verdoyantes du royaume d'Eldoria, projetant de longues ombres qui dansaient au gré du vent.</p>
-                    <p>Notre héros, Kael, un jeune fermier au cœur pur, ignorait encore le destin extraordinaire qui l'attendait. Ce matin-là, alors qu'il cultivait ses terres, il découvrit un artefact étrange, brillant d'une lumière bleutée.</p>
-                    <p>Intrigué, il s'approcha prudemment. L'objet semblait fait d'un métal inconnu, avec des inscriptions complexes qui semblaient presque vivantes. Au moment où ses doigts effleurèrent la surface, une décharge d'énergie le traversa, et des visions de mondes lointains et de créatures mystiques envahirent son esprit.</p>
-                    <p>À cet instant, Kael comprit que sa vie ne serait plus jamais la même. Une quête venait de commencer, une quête qui le mènerait aux confins du connu, à la rencontre de peuples oubliés et de magie ancienne.</p>
-                `;
-            }
-            
+                // Mettre à jour l'icône dans l'en-tête
+                const isNowFavorite = favorites.includes(currentChapter);
+                headerFavorite.className = isNowFavorite ? 'fas fa-heart' : 'far fa-heart';
+                headerFavorite.style.color = isNowFavorite ? 'var(--accent)' : '';
+            });
+        }
+    }, 0);
+    
+    // Update content
+    contentElement.innerHTML = `
+        <h3>${getChapterTitle(currentChapter)}</h3>
+        <p>Il était une fois, dans un monde lointain, une aventure qui allait changer le cours de l'histoire. Le soleil se levait à peine sur les collines verdoyantes du royaume d'Eldoria, projetant de longues ombres qui dansaient au gré du vent.</p>
+        <p>Notre héros, Kael, un jeune fermier au cœur pur, ignorait encore le destin extraordinaire qui l'attendait. Ce matin-là, alors qu'il cultivait ses terres, il découvrit un artefact étrange, brillant d'une lumière bleutée.</p>
+        <p>Intrigué, il s'approcha prudemment. L'objet semblait fait d'un métal inconnu, avec des inscriptions complexes qui semblaient presque vivantes. Au moment où ses doigts effleurèrent la surface, une décharge d'énergie le traversa, et des visions de mondes lointains et de créatures mystiques envahirent son esprit.</p>
+        <p>À cet instant, Kael comprit que sa vie ne serait plus jamais la même. Une quête venait de commencer, une quête qui le mènerait aux confins du connu, à la rencontre de peuples oubliés et de magie ancienne.</p>
+    `;
+}
             function getChapterTitle(chapterNumber) {
                 const titles = [
                     "Le commencement", 
