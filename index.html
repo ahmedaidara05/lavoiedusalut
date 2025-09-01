@@ -305,13 +305,18 @@
             text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
         }
 
-        .reading-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 30px;
-            z-index: 10;
-        }
+  .reading-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;       /* Plus d’espace au-dessus */
+    margin-bottom: 50px;    /* Ajoute de l’espace sous les boutons */
+    padding: 0 20px;        /* Espacement interne */
+    background: transparent !important; /* Supprime tout fond */
+    border: none;            /* Pas de cadre */
+    box-shadow: none;        /* Pas d’ombre */
+    z-index: 10;
+}
 
         .nav-btn {
             background: rgba(0, 0, 0, 0.7);
