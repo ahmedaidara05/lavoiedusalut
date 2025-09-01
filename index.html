@@ -21,6 +21,8 @@
             --line-height: 1.7;
             --font-family: 'Cormorant Garamond', 'Georgia', serif;
             --content-bg: #f8f4e9;
+            --page-background: url('https://i.postimg.cc/DzTfTR3C/3.png');
+
         }
 
         .dark-theme {
@@ -261,37 +263,27 @@
             gap: 10px;
         }
 
-        .content-container {
-            background: var(--content-bg);
-            border-radius: 5px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 
-                        inset 0 0 0 1px rgba(255, 255, 255, 0.8),
-                        inset 0 0 20px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-            max-height: 60vh;
-            overflow-y: auto;
-            position: relative;
-            border: 1px solid #d9c89e;
-            transition: var(--transition);
-        }
+     .content-container {
+  background: var(--page-background) center/cover no-repeat;
+  /* Supprimez ou commentez l'ancienne propriété background */
+  /* background: var(--content-bg); */
+}
 
-        .content-container:before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-            background-size: 20px 20px;
-            pointer-events: none;
-            opacity: 0.4;
-            z-index: 0;
-        }
-
+       .content-container:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+      linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  opacity: 0.4;
+  z-index: 0;
+}
         .content {
             font-family: var(--font-family);
             line-height: var(--line-height);
@@ -703,15 +695,15 @@
                 grid-template-columns: 1fr;
             }
             
-            .reading-page {
-                padding: 15px 20px 70px;
-                display: flex;
-                flex-direction: column;
-                height: calc(100vh - 70px);
-                background: var(--light);
-                transition: background-color 0.3s ease;
-                overflow: hidden;
-            }
+          .reading-page {
+  padding: 15px 40px 20px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 70px);
+  background: transparent; /* Changement ici */
+  transition: background-color 0.3s ease;
+}
+
             
             .content-container {
                 padding: 20px;
@@ -779,6 +771,83 @@
             opacity: 0.7;
             grid-column: 1 / -1;
         }
+  .background-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.background-option {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background-size: cover;
+}
+
+.background-option.active {
+  border-color: var(--accent);
+}
+
+.option-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.background-btn {
+  padding: 8px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  background-color: #f5f5f5;
+  text-align: center;
+}
+
+.background-btn.active {
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+.background-btn span {
+  font-size: 0.8rem;
+}
+
+/* Modification pour le conteneur de contenu avec image de fond */
+.content-container {
+  background-image: var(--page-background, url('URL_DE_VOTRE_IMAGE_PAR_DEFAUT'));
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 
+              inset 0 0 0 1px rgba(255, 255, 255, 0.8),
+              inset 0 0 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+  max-height: 60vh;
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid #d9c89e;
+  transition: var(--transition);
+}
+
+/* Pour préserver l'effet de quadrillage par-dessus l'image */
+.content-container:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+      linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  opacity: 0.4;
+  z-index: 0;
+}
     </style>
 </head>
 <body>
@@ -827,12 +896,14 @@
                     <i class="fas fa-sliders-h"></i>
                 </button>
             </div>
-            <div class="content-container">
-                <div class="content" id="chapterContent">
-                    <h3>Le commencement</h3>
-                    <p>Kael, un jeune fermier, découvre un artefact mystérieux qui changera sa vie.</p>
-                </div>
-            </div>
+           <div class="content-container">
+  <div class="content-page">
+    <div class="content" id="chapterContent">
+      <!-- Votre contenu ici -->
+    </div>
+  </div>
+  <!-- Des div.content-page supplémentaires seront ajoutées dynamiquement si besoin -->
+</div>
             <div class="reading-controls">
                 <button class="nav-btn prev-btn" id="prevChapter">
                     <i class="fas fa-chevron-left"></i> Précédent
@@ -851,14 +922,23 @@
                 </button>
             </div>
             <div class="options-grid">
-                <div class="option-group">
-                    <label class="option-label">Thème</label>
-                    <div class="theme-options">
-                        <button class="theme-btn theme-default active" data-theme="default"></button>
-                        <button class="theme-btn theme-dark" data-theme="dark"></button>
-                        <button class="theme-btn theme-sepia" data-theme="sepia"></button>
-                    </div>
-                </div>
+               <div class="option-group">
+  <label class="option-label">Fond de page</label>
+  <div class="background-options">
+    <button class="background-btn parchment active" data-bg="parchment">
+      <span>Parchemin</span>
+    </button>
+    <button class="background-btn aged-paper" data-bg="aged-paper">
+      <span>Papier vieilli</span>
+    </button>
+    <button class="background-btn scroll" data-bg="scroll">
+      <span>Parchemin déroulé</span>
+    </button>
+    <button class="background-btn modern" data-bg="modern">
+      <span>Moderne</span>
+    </button>
+  </div>
+</div>
                 <div class="option-group">
                     <label class="option-label">Taille du texte</label>
                     <div class="slider-container">
@@ -992,7 +1072,7 @@
             const totalChapters = 40;
 
             const chapterContents = [
-                { chapter: 1, title: "Le commencement", text: "Kael, un jeune fermier, découvre un artefact mystérieux qui changera sa vie." },
+                { chapter: 1, title: "Le commencement", text: "Kael, un jeune fermier, découvre un artefact mystérieux qui changera sa vie. Kael, un jeune fermier, découvre un artefact mystérieux qui changera sa vie. Kael, un jeune fermier, découvre un artefact mystérieux qui changera sa vie. Kael, un jeune fermier, découvre un artefact mystérieux qui changera sa vie. Kael, un jeune fermier, découvre un artefact mystérieux qui changera sa vie. Kael, un jeune fermier, découvre un artefact mystérieux qui changera sa vie." },
                 { chapter: 2, title: "La rencontre", text: "Kael rencontre Elara, une magicienne énigmatique." },
                 { chapter: 3, title: "Le défi", text: "Un défi inattendu attend Kael dans la forêt ancienne." },
                 { chapter: 4, title: "L'alliance", text: "Kael forme une alliance avec les habitants de la forêt." },
@@ -1033,7 +1113,14 @@
                 { chapter: 39, title: "Le destin", text: "Kael fait face à son destin final." },
                 { chapter: 40, title: "L'infini", text: "Kael explore l'infini des possibles." }
             ];
-
+// Après la déclaration des variables, ajoutez :
+const backgroundOptions = [
+  { id: 'parchment', name: 'Parchemin', url: 'https://i.postimg.cc/DzTfTR3C/3.png' },
+  { id: 'aged-paper', name: 'Papier vieilli', url: 'https://example.com/aged-paper.png' },
+  { id: 'scroll', name: 'Parchemin déroulé', url: 'https://example.com/scroll.png' },
+  { id: 'modern', name: 'Moderne', url: 'https://example.com/modern-paper.png' }
+];
+let currentBackground = 'parchment';
             for (let i = 1; i <= totalChapters; i++) {
                 const chapterCard = document.createElement('div');
                 chapterCard.className = 'chapter-card';
@@ -1197,7 +1284,39 @@ fontSizeSlider.addEventListener('input', () => {
                 document.body.appendChild(toast);
                 setTimeout(() => document.body.removeChild(toast), 3000);
             }
+// Après la définition des backgroundOptions, ajoutez :
+function setBackground(backgroundId) {
+  const selectedBg = backgroundOptions.find(bg => bg.id === backgroundId);
+  if (selectedBg) {
+    currentBackground = backgroundId;
+    document.documentElement.style.setProperty('--page-background', `url(${selectedBg.url})`);
+    
+    // Mettre à jour l'interface
+    document.querySelectorAll('.background-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    document.querySelector(`.background-btn[data-bg="${backgroundId}"]`).classList.add('active');
+    
+    // Sauvegarder le choix
+    localStorage.setItem('pageBackground', backgroundId);
+  }
+}
 
+// Au chargement de la page, restaurez le fond choisi
+const savedBackground = localStorage.getItem('pageBackground');
+if (savedBackground) {
+  setBackground(savedBackground);
+} else {
+  setBackground('parchment'); // Valeur par défaut
+}
+
+// Ajoutez les écouteurs d'événements pour les boutons de fond
+document.querySelectorAll('.background-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    const bgId = button.getAttribute('data-bg');
+    setBackground(bgId);
+  });
+});
             function updateFavoritesPage() {
                 const favoritesGrid = document.getElementById('favoritesGrid');
                 if (favorites.length === 0) {
