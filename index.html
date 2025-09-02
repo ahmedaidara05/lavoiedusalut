@@ -839,6 +839,54 @@
     color: var(--text);
     font-size: 1rem;
 }
+.language-selector {
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+}
+      .language-selector select {
+    width: 100%;
+    padding: 12px 15px 12px 40px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 16px;
+    color: #333;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+.language-selector select:focus {
+    outline: none;
+    border-color: #2e7d32;
+    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+}
+
+.language-selector i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    pointer-events: none;
+}
+
+.language-selector::after {
+    content: "";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #666;
+    pointer-events: none;
+}
 
 /* Pour agrandir les options dans le menu déroulant */
 #fontFamily option {
@@ -1046,7 +1094,22 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
       #themeToggle {
     display: none;
 }
-
+.language-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.language-selector i {
+    font-size: 18px;
+    color: var(--primary);
+}
+[lang="ar"] {
+    direction: rtl;
+    text-align: right;
+}
+.chapter-card[lang="ar"] {
+    direction: rtl;
+}
     </style>
 </head>
 <body>
@@ -1124,7 +1187,17 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
 </button>
 
             </div>
-          
+          <div class="option-group">
+    <label class="option-label">Langue</label>
+    <div class="language-selector">
+        <i class="fas fa-globe"></i>
+        <select id="languageSelect" class="slider">
+            <option value="fr">Français</option>
+            <option value="en">Anglais</option>
+            <option value="ar">Arabe</option>
+        </select>
+    </div>
+</div>
             <div class="options-grid">
                 <div class="option-group">
                     <label class="option-label">Taille du texte</label>
@@ -1306,534 +1379,669 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const pages = document.querySelectorAll('.page');
-            const navItems = document.querySelectorAll('.nav-item');
-            const themeToggle = document.getElementById('themeToggle');
-            const startReadingBtn = document.getElementById('startReading');
-            const backToChaptersBtn = document.getElementById('backToChapters');
-            const openCustomizationBtn = document.getElementById('openCustomization');
-            const closeCustomizationBtn = document.getElementById('closeCustomization');
-            const customizationPanel = document.getElementById('customizationPanel');
-            const themeButtons = document.querySelectorAll('.theme-btn');
-            const fontSizeSlider = document.getElementById('fontSize');
-            const fontSizeValue = document.getElementById('fontSizeValue');
-            const lineHeightSlider = document.getElementById('lineHeight');
-            const lineHeightValue = document.getElementById('lineHeightValue');
-            const fontFamilySelect = document.getElementById('fontFamily');
-            const contentElement = document.getElementById('chapterContent');
-            const chaptersGrid = document.getElementById('chaptersGrid');
-            const prevChapterBtn = document.getElementById('prevChapter');
-            const nextChapterBtn = document.getElementById('nextChapter');
-            const chapterIndicator = document.querySelector('.chapter-indicator');
-            const navBar = document.querySelector('.nav-bar');
-            const searchBtn = document.getElementById('searchBtn');
-            const searchModal = document.getElementById('searchModal');
-            const closeSearchBtn = document.getElementById('closeSearch');
-            const searchInput = document.getElementById('searchInput');
-            const searchButton = document.getElementById('searchButton');
-            const searchResults = document.getElementById('searchResults');
-            const textColorButtons = document.querySelectorAll('.text-color');
-            const bgColorButtons = document.querySelectorAll('.bg-color');
-          const privacyPolicyLink = document.getElementById('privacyPolicyLink');
-const backFromPrivacy = document.getElementById('backFromPrivacy');
-            let currentChapter = 1;
-            let customTextColor = null;
-            let customBgColor = null;
-            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-          let headerColor = localStorage.getItem('headerColor') || '#2e7d32';
-let footerColor = localStorage.getItem('footerColor') || '#2e7d32';
-          let appBgColor = localStorage.getItem('appBgColor') || '#d2c9a3';
-          let globalTextColor = localStorage.getItem('globalTextColor') || '#000000';
-
-
-            const totalChapters = 40;
-
-            const chapterContents = [
-                { chapter: 1, title: "Le commencement", text: "Kael, un jeune fermier, découvre un artefact mystérieux qui changera sa vie. Kael, un jeune fermier, découvre un artefact mystérieux qui changera sa vie. Kael, un jeune fermier, découvre un artefact mystérieux qui changera sa vie. Kael, un jeune fermier, découvre un artefact mystérieux qui changera sa vie. Kael, un jeune fermier, découvre un artefact mystérieux qui changera sa vie. Kael, un jeune fermier, découvre un artefact mystérieux qui changera sa vie." },
-                { chapter: 2, title: "La rencontre", text: "Kael rencontre Elara, une magicienne énigmatique." },
-                { chapter: 3, title: "Le défi", text: "Un défi inattendu attend Kael dans la forêt ancienne." },
-                { chapter: 4, title: "L'alliance", text: "Kael forme une alliance avec les habitants de la forêt." },
-                { chapter: 5, title: "Le voyage", text: "Le voyage à travers les montagnes commence." },
-                { chapter: 6, title: "L'obstacle", text: "Un obstacle majeur bloque le chemin de Kael." },
-                { chapter: 7, title: "La révélation", text: "Kael découvre un secret sur son passé." },
-                { chapter: 8, title: "La trahison", text: "Une trahison bouleverse la quête de Kael." },
-                { chapter: 9, title: "La bataille", text: "Une bataille épique éclate contre les forces obscures." },
-                { chapter: 10, title: "La victoire", text: "Kael triomphe, mais à quel prix ?" },
-                { chapter: 11, title: "Le nouveau départ", text: "Un nouveau chapitre s'ouvre pour Kael." },
-                { chapter: 12, title: "L'énigme", text: "Une énigme complexe défie Kael." },
-                { chapter: 13, title: "Le secret", text: "Un secret ancien est révélé." },
-                { chapter: 14, title: "La décision", text: "Kael doit faire un choix crucial." },
-                { chapter: 15, title: "Le sacrifice", text: "Un sacrifice est nécessaire pour avancer." },
-                { chapter: 16, title: "L'espoir", text: "L'espoir renaît dans le cœur de Kael." },
-                { chapter: 17, title: "Le retour", text: "Kael retourne dans son village natal." },
-                { chapter: 18, title: "La confrontation", text: "Une confrontation décisive a lieu." },
-                { chapter: 19, title: "La rédemption", text: "Kael cherche la rédemption pour ses erreurs." },
-                { chapter: 20, title: "La conclusion", text: "La quête atteint son apogée." },
-                { chapter: 21, title: "L'éveil", text: "Kael s'éveille à une nouvelle réalité." },
-                { chapter: 22, title: "La transformation", text: "Une transformation profonde affecte Kael." },
-                { chapter: 23, title: "L'exploration", text: "Kael explore un territoire inconnu." },
-                { chapter: 24, title: "La découverte", text: "Une découverte majeure change tout." },
-                { chapter: 25, title: "L'épreuve", text: "Kael fait face à une épreuve redoutable." },
-                { chapter: 26, title: "La séparation", text: "Kael doit se séparer de ses alliés." },
-                { chapter: 27, title: "La réunion", text: "Une réunion émouvante a lieu." },
-                { chapter: 28, title: "L'ascension", text: "Kael gravit les échelons du pouvoir." },
-                { chapter: 29, title: "La chute", text: "Une chute dramatique menace Kael." },
-                { chapter: 30, title: "La renaissance", text: "Kael renaît de ses cendres." },
-                { chapter: 31, title: "L'illumination", text: "Kael atteint l'illumination spirituelle." },
-                { chapter: 32, title: "La persévérance", text: "La persévérance de Kael est mise à l'épreuve." },
-                { chapter: 33, title: "La résolution", text: "Kael trouve une résolution à ses conflits." },
-                { chapter: 34, title: "L'héritage", text: "Kael découvre son véritable héritage." },
-                { chapter: 35, title: "La prophétie", text: "Une prophétie guide Kael." },
-                { chapter: 36, title: "L'accomplissement", text: "Kael accomplit son destin." },
-                { chapter: 37, title: "Le mystère", text: "Un mystère entoure la quête de Kael." },
-                { chapter: 38, title: "L'aventure", text: "Une nouvelle aventure commence." },
-                { chapter: 39, title: "Le destin", text: "Kael fait face à son destin final." },
-                { chapter: 40, title: "L'infini", text: "Kael explore l'infini des possibles." }
-            ];
-
-            for (let i = 1; i <= totalChapters; i++) {
-                const chapterCard = document.createElement('div');
-                chapterCard.className = 'chapter-card';
-                chapterCard.innerHTML = `
-                    <div class="chapter-number">${i}</div>
-                    <div class="chapter-title">${getChapterTitle(i)}</div>
-                    <div class="favorite-icon" id="favorite-${i}">
-                        ${favorites.includes(i) ? '<i class="fas fa-bookmark"></i>' : '<i class="far fa-bookmark"></i>'}
-                    </div>
-                `;
-                chapterCard.addEventListener('click', () => {
-                    currentChapter = i;
-                    updateChapterContent();
-                    showPage('readingPage');
-                });
-                const favIcon = chapterCard.querySelector('.favorite-icon');
-                favIcon.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    toggleFavorite(i);
-                });
-                chaptersGrid.appendChild(chapterCard);
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Variables et constantes
+    const pages = document.querySelectorAll('.page');
+    const navItems = document.querySelectorAll('.nav-item');
+    const themeToggle = document.getElementById('themeToggle');
+    const startReadingBtn = document.getElementById('startReading');
+    const backToChaptersBtn = document.getElementById('backToChapters');
+    const openCustomizationBtn = document.getElementById('openCustomization');
+    const closeCustomizationBtn = document.getElementById('closeCustomization');
+    const customizationPanel = document.getElementById('customizationPanel');
+    const fontSizeSlider = document.getElementById('fontSize');
+    const fontSizeValue = document.getElementById('fontSizeValue');
+    const lineHeightSlider = document.getElementById('lineHeight');
+    const lineHeightValue = document.getElementById('lineHeightValue');
+    const fontFamilySelect = document.getElementById('fontFamily');
+    const contentElement = document.getElementById('chapterContent');
+    const chaptersGrid = document.getElementById('chaptersGrid');
+    const prevChapterBtn = document.getElementById('prevChapter');
+    const nextChapterBtn = document.getElementById('nextChapter');
+    const chapterIndicator = document.querySelector('.chapter-indicator');
+    const navBar = document.querySelector('.nav-bar');
+    const searchBtn = document.getElementById('searchBtn');
+    const searchModal = document.getElementById('searchModal');
+    const closeSearchBtn = document.getElementById('closeSearch');
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    const searchResults = document.getElementById('searchResults');
+    const textColorButtons = document.querySelectorAll('.text-color');
+    const bgOptions = document.querySelectorAll('.bg-option');
+    const privacyPolicyLink = document.getElementById('privacyPolicyLink');
+    const backFromPrivacy = document.getElementById('backFromPrivacy');
+    
+    let currentChapter = 1;
+    let currentLanguage = localStorage.getItem('language') || 'fr';
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    let headerColor = localStorage.getItem('headerColor') || '#2e7d32';
+    let footerColor = localStorage.getItem('footerColor') || '#2e7d32';
+    let appBgColor = localStorage.getItem('appBgColor') || '#d2c9a3';
+    let globalTextColor = localStorage.getItem('globalTextColor') || '#000000';
+    let customTextColor = null;
+    let customBgColor = null;
+    
+    // Définir les contenus des chapitres
+    const chapterContents = [
+        {
+            chapter: 1,
+            title: { fr: "Préambule", en: "Preamble", ar: "المُقَدِّمَة" },
+            text: {
+                fr: "<span style=\"font-size: 25px;\"><b>Préambule</b></span><br>Loin de nous l’esprit de dénigrer, mais près de nous l’esprit d’éveiller. Ainsi donc, motivé par l’amour de la vérité et le respect que j’ai envers tous les non-musulmans, je m’adresse à vous (homme de Dieu, frère dans la foi), avec la sincère intention de ne me permettre, après avoir médité la parole de Dieu, de garder le minimum que j’ai acquis...",
+                en: "<span style=\"font-size: 25px;\"><b>Preamble</b></span><br>Far from the spirit of denigration, but close to the spirit of awakening, I address you, man of God, brother in faith, motivated by the love of truth and respect for all non-Muslims, to share what I’ve gained after meditating on God’s word...",
+                ar: "<span style=\"font-size: 25px;\"><b>المُقَدِّمَة</b></span><br>بَعِيدًا عَنْ رُوحِ التَّنَقُّصِ وَقَرِيبًا مِنْ رُوحِ الإِيقَاظِ، أُخَاطِبُكَ يَا رَجُلَ اللهِ، يَا أَخِي فِي الإِيمَانِ، بِدَافِعِ حُبِّ الحَقِيقَةِ وَالاحْتِرَامِ لِغَيْرِ المُسْلِمِينَ، لِأُشَارِكَ مَا حَصَلْتُ عَلَيْهِ بَعْدَ التَّأَمُّلِ فِي كَلِمَةِ اللهِ..."
             }
-
-            function showPage(pageId) {
-                pages.forEach(page => page.classList.remove('active'));
-                document.getElementById(pageId).classList.add('active');
-                navItems.forEach(item => {
-                    item.classList.remove('active');
-                    if (item.getAttribute('data-page') === pageId) item.classList.add('active');
-                });
+        },
+        {
+            chapter: 2,
+            title: { fr: "Préface", en: "Preface", ar: "المقدمة" },
+            text: {
+                fr: "<span style=\"font-size: 25px;\"><b>Préface</b></span><br>Contenu de la préface en français...",
+                en: "<span style=\"font-size: 25px;\"><b>Preface</b></span><br>Preface content in English...",
+                ar: "<span style=\"font-size: 25px;\"><b>المقدمة</b></span><br>محتوى المقدمة بالعربية..."
             }
-
+        }
+        // Ajouter les autres chapitres ici
+    ];
+    
+    const totalChapters = chapterContents.length;
+    
+  function init() {
+        updateChaptersGrid();
+        updateChapterContent();
+        updateFavoritesPage();
+        applySavedSettings();
+        setupEventListeners();
+        updateLanguage(); // Ajouter cet appel
+    }
+    
+    // Appliquer les paramètres sauvegardés
+    function applySavedSettings() {
+        // Appliquer les couleurs
+        applyHeaderColor(headerColor);
+        applyFooterColor(footerColor);
+        applyAppBgColor(appBgColor);
+        applyGlobalTextColor(globalTextColor);
+        
+        // Mettre en surbrillance les couleurs sélectionnées
+        highlightSelectedColors();
+        highlightSelectedAppBgColor();
+        highlightSelectedTextColor();
+        
+        // Appliquer la taille de police
+        if (fontSizeSlider && fontSizeValue) {
+            const savedFontSize = localStorage.getItem('fontSize');
+            if (savedFontSize) {
+                fontSizeSlider.value = savedFontSize;
+                fontSizeValue.textContent = `${savedFontSize}px`;
+                document.documentElement.style.setProperty('--font-size', `${savedFontSize}px`);
+                if (contentElement) contentElement.style.fontSize = `${savedFontSize}px`;
+            }
+        }
+        
+        // Appliquer la hauteur de ligne
+        if (lineHeightSlider && lineHeightValue) {
+            const savedLineHeight = localStorage.getItem('lineHeight');
+            if (savedLineHeight) {
+                lineHeightSlider.value = savedLineHeight;
+                lineHeightValue.textContent = savedLineHeight;
+                document.documentElement.style.setProperty('--line-height', savedLineHeight);
+            }
+        }
+        
+         if (fontFamilySelect) {
+            const savedFontFamily = localStorage.getItem('fontFamily');
+            if (savedFontFamily) {
+                fontFamilySelect.value = savedFontFamily;
+                document.documentElement.style.setProperty('--font-family', savedFontFamily);
+            }
+        }
+    }
+    
+    // Configuration des écouteurs d'événements
+    function setupEventListeners() {
+        // Navigation
+        if (navItems && navItems.length) {
             navItems.forEach(item => {
                 item.addEventListener('click', function(e) {
                     e.preventDefault();
                     showPage(this.getAttribute('data-page'));
                 });
             });
-
+        }
+        
+        if (startReadingBtn) {
             startReadingBtn.addEventListener('click', () => showPage('chaptersPage'));
+        }
+        
+        if (backToChaptersBtn) {
             backToChaptersBtn.addEventListener('click', () => showPage('chaptersPage'));
-
-            function toggleCustomizationPanel() {
-                customizationPanel.classList.toggle('open');
-                navBar.style.opacity = customizationPanel.classList.contains('open') ? '0' : '1';
-                navBar.style.pointerEvents = customizationPanel.classList.contains('open') ? 'none' : 'auto';
-            }
-
+        }
+        
+        // Personnalisation
+        if (openCustomizationBtn) {
             openCustomizationBtn.addEventListener('click', toggleCustomizationPanel);
+        }
+        
+        if (closeCustomizationBtn) {
             closeCustomizationBtn.addEventListener('click', toggleCustomizationPanel);
-
-            document.addEventListener('click', (e) => {
-                if (customizationPanel.classList.contains('open') && 
-                    !customizationPanel.contains(e.target) && 
-                    !openCustomizationBtn.contains(e.target)) {
-                    toggleCustomizationPanel();
-                }
-            });
-
-            themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('dark-theme');
-                customTextColor = null;
-                customBgColor = null;
-                textColorButtons.forEach(btn => btn.classList.remove('active'));
-                bgColorButtons.forEach(btn => btn.classList.remove('active'));
-                document.querySelector('.text-color.black').classList.add('active');
-                document.querySelector('.bg-color.beige').classList.add('active');
-                themeToggle.innerHTML = document.body.classList.contains('dark-theme') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-            });
-
-            themeButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    document.body.classList.remove('dark-theme', 'sepia-theme');
-                    const theme = button.getAttribute('data-theme');
-                    if (theme !== 'default') document.body.classList.add(`${theme}-theme`);
-                    customTextColor = null;
-                    customBgColor = null;
-                    textColorButtons.forEach(btn => btn.classList.remove('active'));
-                    bgColorButtons.forEach(btn => btn.classList.remove('active'));
-                    document.querySelector('.text-color.black').classList.add('active');
-                    document.querySelector('.bg-color.beige').classList.add('active');
-                    themeButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    themeToggle.innerHTML = theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-                });
-            });
-
-            fontSizeSlider.addEventListener('input', () => {
-                const size = fontSizeSlider.value;
-                fontSizeValue.textContent = `${size}px`;
-                document.documentElement.style.setProperty('--font-size', `${size}px`);
-                contentElement.style.fontSize = `${size}px`;
-            });
-
-            lineHeightSlider.addEventListener('input', () => {
-                const height = lineHeightSlider.value;
-                lineHeightValue.textContent = height;
-                document.documentElement.style.setProperty('--line-height', height);
-            });
-
-            fontFamilySelect.addEventListener('change', () => {
-                document.documentElement.style.setProperty('--font-family', fontFamilySelect.value);
-            });
-
-            textColorButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    textColorButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    customTextColor = button.getAttribute('data-color');
-                    document.documentElement.style.setProperty('--text', customTextColor);
-                });
-            });
-
-            bgColorButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    bgColorButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    customBgColor = button.getAttribute('data-color');
-                    document.documentElement.style.setProperty('--content-bg', customBgColor);
-                    document.body.classList.remove('dark-theme', 'sepia-theme');
-                    themeButtons.forEach(btn => btn.classList.remove('active'));
-                });
-            });
-
-            function toggleFavorite(chapterNumber) {
-                const index = favorites.indexOf(chapterNumber);
-                if (index === -1) {
-                    favorites.push(chapterNumber);
-                    showNotification('Chapitre ajouté aux favoris');
-                } else {
-                    favorites.splice(index, 1);
-                    showNotification('Chapitre retiré des favoris');
-                }
-                localStorage.setItem('favorites', JSON.stringify(favorites));
-                updateFavoriteIcon(chapterNumber);
-                updateFavoritesPage();
-            }
-
-            function updateFavoriteIcon(chapterNumber) {
-                const heartIcon = document.getElementById(`favorite-${chapterNumber}`);
-                if (heartIcon) {
-                    heartIcon.classList.toggle('active', favorites.includes(chapterNumber));
-                    heartIcon.innerHTML = favorites.includes(chapterNumber) ? '<i class="fas fa-bookmark"></i>' : '<i class="far fa-bookmark"></i>';
-                }
-            }
-
-            function showNotification(message) {
-                const toast = document.createElement('div');
-                toast.textContent = message;
-                toast.style.position = 'fixed';
-                toast.style.bottom = '80px';
-                toast.style.left = '50%';
-                toast.style.transform = 'translateX(-50%)';
-                toast.style.backgroundColor = 'var(--primary)';
-                toast.style.color = 'white';
-                toast.style.padding = '10px 20px';
-                toast.style.borderRadius = '25px';
-                toast.style.zIndex = '1000';
-                toast.style.boxShadow = '0 3px 10px rgba(0, 0, 0, 0.2)';
-                document.body.appendChild(toast);
-                setTimeout(() => document.body.removeChild(toast), 3000);
-            }
-          // Fonction pour appliquer la couleur du texte global
-function applyGlobalTextColor(color) {
-    document.documentElement.style.setProperty('--global-text-color', color);
-    globalTextColor = color;
-    localStorage.setItem('globalTextColor', color);
-}
-
-// Mettre en surbrillance la couleur de texte sélectionnée
-function highlightSelectedTextColor() {
-    // Supprimer la sélection actuelle
-    document.querySelectorAll('.text-all-color').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    
-    // Sélectionner la couleur sauvegardée
-    document.querySelectorAll('.text-all-color').forEach(btn => {
-        if (btn.getAttribute('data-color') === globalTextColor) {
-            btn.classList.add('active');
         }
-    });
-}
-
-// Gestion des clics sur les options de couleur de texte global
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('text-all-color')) {
-        const color = e.target.getAttribute('data-color');
-        applyGlobalTextColor(color);
-        highlightSelectedTextColor();
-    }
-});
-          // Fonction pour appliquer la couleur de fond
-function applyAppBgColor(color) {
-    document.documentElement.style.setProperty('--app-bg-color', color);
-    appBgColor = color;
-    localStorage.setItem('appBgColor', color);
-}
-
-// Mettre en surbrillance la couleur sélectionnée
-function highlightSelectedAppBgColor() {
-    // Supprimer la sélection actuelle
-    document.querySelectorAll('.app-bg-color').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    
-    // Sélectionner la couleur sauvegardée
-    document.querySelectorAll('.app-bg-color').forEach(btn => {
-        if (btn.getAttribute('data-color') === appBgColor) {
-            btn.classList.add('active');
+        
+        // Thème
+        if (themeToggle) {
+            themeToggle.addEventListener('click', toggleTheme);
         }
-    });
-}
-
-// Gestion des clics sur les options de couleur de fond
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('app-bg-color')) {
-        const color = e.target.getAttribute('data-color');
-        applyAppBgColor(color);
-        highlightSelectedAppBgColor();
-    }
-});
-// Aller à la page politique de confidentialité
-privacyPolicyLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    showPage('privacyPolicyPage');
-});
-
-// Retour en arrière depuis la page politique
-backFromPrivacy.addEventListener('click', () => {
-    showPage('homePage');
-});
-          // Appliquer les couleurs au chargement
-document.addEventListener('DOMContentLoaded', function() {
-    applyHeaderColor(headerColor);
-    applyFooterColor(footerColor);
-    
-    // Mettre en surbrillance les couleurs sélectionnées
-    highlightSelectedColors();
-});
-
-// Fonctions pour appliquer les couleurs
-function applyHeaderColor(color) {
-    const header = document.querySelector('header');
-    header.style.backgroundColor = color;
-    headerColor = color;
-    localStorage.setItem('headerColor', color);
-}
-
-function applyFooterColor(color) {
-    const footer = document.querySelector('.nav-bar');
-    footer.style.backgroundColor = color;
-    footerColor = color;
-    localStorage.setItem('footerColor', color);
-}
-
-// Mettre en surbrillance les couleurs sélectionnées
-function highlightSelectedColors() {
-    // Supprimer la sélection actuelle
-    document.querySelectorAll('.header-color, .footer-color').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    
-    // Sélectionner les couleurs sauvegardées
-    document.querySelectorAll('.header-color').forEach(btn => {
-        if (btn.getAttribute('data-color') === headerColor) {
-            btn.classList.add('active');
+        
+        // Paramètres de texte
+        if (fontSizeSlider) {
+            fontSizeSlider.addEventListener('input', updateFontSize);
         }
-    });
-    
-    document.querySelectorAll('.footer-color').forEach(btn => {
-        if (btn.getAttribute('data-color') === footerColor) {
-            btn.classList.add('active');
+        
+        if (lineHeightSlider) {
+            lineHeightSlider.addEventListener('input', updateLineHeight);
         }
-    });
-}
-
-// Gestion des clics sur les nouvelles options de couleur
-document.addEventListener('click', function(e) {
-    // Couleur de la barre supérieure
-    if (e.target.classList.contains('header-color')) {
-        const color = e.target.getAttribute('data-color');
-        applyHeaderColor(color);
-        highlightSelectedColors();
-    }
-    
-    // Couleur de la barre inférieure
-    if (e.target.classList.contains('footer-color')) {
-        const color = e.target.getAttribute('data-color');
-        applyFooterColor(color);
-        highlightSelectedColors();
-    }
-});
-            function updateFavoritesPage() {
-                const favoritesGrid = document.getElementById('favoritesGrid');
-                if (favorites.length === 0) {
-                    favoritesGrid.innerHTML = '<div class="no-favorites">Aucun chapitre favori pour le moment</div>';
-                    return;
-                }
-                favoritesGrid.innerHTML = '';
-                const sortedFavorites = [...favorites].sort((a, b) => a - b);
-                sortedFavorites.forEach(chapterNumber => {
-                    const chapterCard = document.createElement('div');
-                    chapterCard.className = 'chapter-card';
-                    chapterCard.innerHTML = `
-                        <div class="chapter-number">${chapterNumber}</div>
-                        <div class="chapter-title">${getChapterTitle(chapterNumber)}</div>
-                        <div class="favorite-icon active" id="favorite-fav-${chapterNumber}">
-                            <i class="fas fa-bookmark"></i>
-                        </div>
-                    `;
-                    chapterCard.addEventListener('click', () => {
-                        currentChapter = chapterNumber;
-                        updateChapterContent();
-                        showPage('readingPage');
-                    });
-                    const favIcon = chapterCard.querySelector('.favorite-icon');
-                    favIcon.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        toggleFavorite(chapterNumber);
-                    });
-                    favoritesGrid.appendChild(chapterCard);
-                });
-            }
-
-            function getChapterTitle(chapterNumber) {
-                return chapterContents[chapterNumber - 1].title || `Chapitre ${chapterNumber}`;
-            }
-
-            prevChapterBtn.addEventListener('click', () => {
-                if (currentChapter > 1) {
-                    currentChapter--;
-                    updateChapterContent();
-                    contentElement.scrollTop = 0;
-                }
-            });
-
-            nextChapterBtn.addEventListener('click', () => {
-                if (currentChapter < totalChapters) {
-                    currentChapter++;
-                    updateChapterContent();
-                    contentElement.scrollTop = 0;
-                }
-            });
-
-            function updateChapterContent() {
-                chapterIndicator.textContent = `Chapitre ${currentChapter}`;
-                prevChapterBtn.disabled = currentChapter === 1;
-                nextChapterBtn.disabled = currentChapter === totalChapters;
-                const chapter = chapterContents[currentChapter - 1];
-                contentElement.innerHTML = `
-                    <h3>${chapter.title}</h3>
-                    <p>${chapter.text}</p>
-                `;
-            }
-
-            searchBtn.addEventListener('click', () => {
-                searchModal.classList.add('active');
-                searchInput.focus();
-            });
-
-            closeSearchBtn.addEventListener('click', () => {
-                searchModal.classList.remove('active');
-                searchInput.value = '';
-                searchResults.innerHTML = '<div class="no-results">Aucune recherche effectuée</div>';
-            });
-
-            searchModal.addEventListener('click', (e) => {
-                if (e.target === searchModal) {
-                    searchModal.classList.remove('active');
-                    searchInput.value = '';
-                    searchResults.innerHTML = '<div class="no-results">Aucune recherche effectuée</div>';
-                }
-            });
-
+        
+        if (fontFamilySelect) {
+            fontFamilySelect.addEventListener('change', updateFontFamily);
+        }
+        
+        // Navigation des chapitres
+        if (prevChapterBtn) {
+            prevChapterBtn.addEventListener('click', goToPrevChapter);
+        }
+        
+        if (nextChapterBtn) {
+            nextChapterBtn.addEventListener('click', goToNextChapter);
+        }
+        
+        // Recherche
+        if (searchBtn) {
+            searchBtn.addEventListener('click', openSearchModal);
+        }
+        
+        if (closeSearchBtn) {
+            closeSearchBtn.addEventListener('click', closeSearchModal);
+        }
+        
+        if (searchButton) {
             searchButton.addEventListener('click', performSearch);
+        }
+        
+        if (searchInput) {
             searchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') performSearch();
             });
-
-            function performSearch() {
-                const searchTerm = searchInput.value.trim();
-                searchResults.innerHTML = '';
-                if (searchTerm.length < 2) {
-                    searchResults.innerHTML = '<div class="no-results">Veuillez entrer au moins 2 caractères</div>';
-                    return;
-                }
-                const results = chapterContents.filter(chapter => 
-                    chapter.text.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                    chapter.title.toLowerCase().includes(searchTerm.toLowerCase())
-                );
-                if (results.length === 0) {
-                    searchResults.innerHTML = `<div class="no-results">Aucun résultat trouvé pour "${searchTerm}"</div>`;
-                    return;
-                }
-                results.forEach(result => {
-                    const resultElement = document.createElement('div');
-                    resultElement.className = 'search-result-item';
-                    resultElement.innerHTML = `
-                        <div class="result-chapter">Chapitre ${result.chapter}: ${result.title}</div>
-                        <div class="result-text">${highlightText(result.text, searchTerm)}</div>
-                    `;
-                    resultElement.addEventListener('click', () => {
-                        currentChapter = result.chapter;
-                        updateChapterContent();
-                        showPage('readingPage');
-                        searchModal.classList.remove('active');
-                        searchInput.value = '';
-                        highlightSearchTerm(searchTerm);
-                    });
-                    searchResults.appendChild(resultElement);
-                });
+        }
+        
+        // Politique de confidentialité
+        if (privacyPolicyLink) {
+            privacyPolicyLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage('privacyPolicyPage');
+            });
+        }
+        
+        if (backFromPrivacy) {
+            backFromPrivacy.addEventListener('click', () => {
+                showPage('homePage');
+            });
+        }
+        
+        // Fermer les modales en cliquant à l'extérieur
+        document.addEventListener('click', (e) => {
+            if (customizationPanel && customizationPanel.classList.contains('open') && 
+                !customizationPanel.contains(e.target) && 
+                !openCustomizationBtn.contains(e.target)) {
+                toggleCustomizationPanel();
             }
-
-            function highlightText(text, term) {
-                const regex = new RegExp(`(${term})`, 'gi');
-                return text.replace(regex, '<span class="highlight">$1</span>');
+            
+            if (searchModal && searchModal.classList.contains('active') && e.target === searchModal) {
+                closeSearchModal();
             }
-
-            function highlightSearchTerm(term) {
-                const content = document.getElementById('chapterContent');
-                const oldHighlights = content.querySelectorAll('.highlight');
-                oldHighlights.forEach(el => {
-                    const parent = el.parentNode;
-                    parent.replaceChild(document.createTextNode(el.textContent), el);
-                    parent.normalize();
-                });
-                if (term && term.length >= 2) {
-                    const regex = new RegExp(`(${term})`, 'gi');
-                    content.innerHTML = content.innerHTML.replace(regex, '<span class="highlight">$1</span>');
-                    const firstHighlight = content.querySelector('.highlight');
-                    if (firstHighlight) {
-                        firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                }
-            }
-
-            updateChapterContent();
-            updateFavoritesPage();
         });
-    </script>
+    }
+    
+    // Fonctions pour la navigation
+    function showPage(pageId) {
+        pages.forEach(page => page.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('data-page') === pageId) item.classList.add('active');
+        });
+    }
+    
+    // Fonctions pour la personnalisation
+    function toggleCustomizationPanel() {
+        if (!customizationPanel || !navBar) return;
+        
+        customizationPanel.classList.toggle('open');
+        navBar.style.opacity = customizationPanel.classList.contains('open') ? '0' : '1';
+        navBar.style.pointerEvents = customizationPanel.classList.contains('open') ? 'none' : 'auto';
+    }
+    
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        customTextColor = null;
+        customBgColor = null;
+        
+        if (textColorButtons && textColorButtons.length) {
+            textColorButtons.forEach(btn => btn.classList.remove('active'));
+        }
+        
+        if (bgOptions && bgOptions.length) {
+            bgOptions.forEach(btn => btn.classList.remove('active'));
+        }
+        
+        if (document.querySelector('.text-color.black')) {
+            document.querySelector('.text-color.black').classList.add('active');
+        }
+        
+        if (document.querySelector('.bg-color.beige')) {
+            document.querySelector('.bg-color.beige').classList.add('active');
+        }
+        
+        if (themeToggle) {
+            themeToggle.innerHTML = document.body.classList.contains('dark-theme') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+    }
+    
+    function updateFontSize() {
+        const size = fontSizeSlider.value;
+        fontSizeValue.textContent = `${size}px`;
+        document.documentElement.style.setProperty('--font-size', `${size}px`);
+        if (contentElement) contentElement.style.fontSize = `${size}px`;
+        localStorage.setItem('fontSize', size);
+    }
+    
+    function updateLineHeight() {
+        const height = lineHeightSlider.value;
+        lineHeightValue.textContent = height;
+        document.documentElement.style.setProperty('--line-height', height);
+        localStorage.setItem('lineHeight', height);
+    }
+    
+    function updateFontFamily() {
+        document.documentElement.style.setProperty('--font-family', fontFamilySelect.value);
+        localStorage.setItem('fontFamily', fontFamilySelect.value);
+    }
+    
+    // Fonctions pour les couleurs
+    function applyHeaderColor(color) {
+        const header = document.querySelector('header');
+        if (header) header.style.backgroundColor = color;
+        headerColor = color;
+        localStorage.setItem('headerColor', color);
+    }
+    
+    function applyFooterColor(color) {
+        if (navBar) navBar.style.backgroundColor = color;
+        footerColor = color;
+        localStorage.setItem('footerColor', color);
+    }
+    
+    function applyAppBgColor(color) {
+        document.documentElement.style.setProperty('--app-bg-color', color);
+        appBgColor = color;
+        localStorage.setItem('appBgColor', color);
+    }
+    
+    function applyGlobalTextColor(color) {
+        document.documentElement.style.setProperty('--global-text-color', color);
+        globalTextColor = color;
+        localStorage.setItem('globalTextColor', color);
+    }
+    
+    function highlightSelectedColors() {
+        // Supprimer la sélection actuelle
+        document.querySelectorAll('.header-color, .footer-color').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Sélectionner les couleurs sauvegardées
+        document.querySelectorAll('.header-color').forEach(btn => {
+            if (btn.getAttribute('data-color') === headerColor) {
+                btn.classList.add('active');
+            }
+        });
+        
+        document.querySelectorAll('.footer-color').forEach(btn => {
+            if (btn.getAttribute('data-color') === footerColor) {
+                btn.classList.add('active');
+            }
+        });
+    }
+    
+    function highlightSelectedAppBgColor() {
+        // Supprimer la sélection actuelle
+        document.querySelectorAll('.app-bg-color').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Sélectionner la couleur sauvegardée
+        document.querySelectorAll('.app-bg-color').forEach(btn => {
+            if (btn.getAttribute('data-color') === appBgColor) {
+                btn.classList.add('active');
+            }
+        });
+    }
+    // Ajouter cette fonction pour mettre à jour la langue
+    function updateLanguage() {
+        const languageSelect = document.getElementById('languageSelect');
+        if (languageSelect) {
+            languageSelect.value = currentLanguage;
+            languageSelect.addEventListener('change', function() {
+                currentLanguage = this.value;
+                localStorage.setItem('language', currentLanguage);
+                
+                // Mettre à jour tous les éléments de l'interface
+                updateChaptersGrid();
+                updateChapterContent();
+                updateFavoritesPage();
+                
+                // Mettre à jour la page de politique de confidentialité si nécessaire
+                const privacyPage = document.getElementById('privacyPolicyPage');
+                if (privacyPage) {
+                    privacyPage.setAttribute('lang', currentLanguage);
+                }
+                
+                showNotification(`Langue changée en ${getLanguageName(currentLanguage)}`);
+            });
+        }
+    }
+    function getLanguageName(code) {
+        const languages = {
+            'fr': 'Français',
+            'en': 'English',
+            'ar': 'العربية'
+        };
+        return languages[code] || code;
+    }
+    
+    function highlightSelectedTextColor() {
+        // Supprimer la sélection actuelle
+        document.querySelectorAll('.text-all-color').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Sélectionner la couleur sauvegardée
+        document.querySelectorAll('.text-all-color').forEach(btn => {
+            if (btn.getAttribute('data-color') === globalTextColor) {
+                btn.classList.add('active');
+            }
+        });
+    }
+    
+    // Gestion des clics sur les options de couleur
+    document.addEventListener('click', function(e) {
+        // Couleur de la barre supérieure
+        if (e.target.classList.contains('header-color')) {
+            const color = e.target.getAttribute('data-color');
+            applyHeaderColor(color);
+            highlightSelectedColors();
+        }
+        
+        // Couleur de la barre inférieure
+        if (e.target.classList.contains('footer-color')) {
+            const color = e.target.getAttribute('data-color');
+            applyFooterColor(color);
+            highlightSelectedColors();
+        }
+        
+        // Couleur de fond de l'application
+        if (e.target.classList.contains('app-bg-color')) {
+            const color = e.target.getAttribute('data-color');
+            applyAppBgColor(color);
+            highlightSelectedAppBgColor();
+        }
+        
+        // Couleur de texte globale
+        if (e.target.classList.contains('text-all-color')) {
+            const color = e.target.getAttribute('data-color');
+            applyGlobalTextColor(color);
+            highlightSelectedTextColor();
+        }
+    });
+    
+    // Fonctions pour les chapitres et favoris
+    function updateChaptersGrid() {
+        if (!chaptersGrid) return;
+        
+        chaptersGrid.innerHTML = '';
+        
+        chapterContents.forEach(chapter => {
+            const chapterCard = document.createElement('div');
+            chapterCard.className = 'chapter-card';
+            chapterCard.setAttribute('lang', currentLanguage);
+            chapterCard.innerHTML = `
+                <div class="chapter-number">${chapter.chapter}</div>
+                <div class="chapter-title">${chapter.title[currentLanguage] || 'Chapitre ' + chapter.chapter}</div>
+                <div class="favorite-icon" id="favorite-${chapter.chapter}">
+                    ${favorites.includes(chapter.chapter) ? '<i class="fas fa-bookmark"></i>' : '<i class="far fa-bookmark"></i>'}
+                </div>
+            `;
+            
+            chapterCard.addEventListener('click', () => {
+                currentChapter = chapter.chapter;
+                updateChapterContent();
+                showPage('readingPage');
+            });
+            
+            const favIcon = chapterCard.querySelector('.favorite-icon');
+            favIcon.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFavorite(chapter.chapter);
+            });
+            
+            chaptersGrid.appendChild(chapterCard);
+        });
+    }
+    
+    function updateChapterContent() {
+        const chapter = chapterContents.find(ch => ch.chapter === currentChapter);
+        if (!chapter || !contentElement || !chapterIndicator) return;
+        
+        chapterIndicator.textContent = `Chapitre ${currentChapter}`;
+        
+        if (prevChapterBtn) prevChapterBtn.disabled = currentChapter === 1;
+        if (nextChapterBtn) nextChapterBtn.disabled = currentChapter === chapterContents.length;
+        
+        contentElement.innerHTML = chapter.text[currentLanguage] || 'Contenu non disponible';
+        contentElement.setAttribute('lang', currentLanguage);
+    }
+    
+    function goToPrevChapter() {
+        if (currentChapter > 1) {
+            currentChapter--;
+            updateChapterContent();
+            if (contentElement) contentElement.scrollTop = 0;
+        }
+    }
+    
+    function goToNextChapter() {
+        if (currentChapter < chapterContents.length) {
+            currentChapter++;
+            updateChapterContent();
+            if (contentElement) contentElement.scrollTop = 0;
+        }
+    }
+    
+    function toggleFavorite(chapterNumber) {
+        const index = favorites.indexOf(chapterNumber);
+        if (index === -1) {
+            favorites.push(chapterNumber);
+            showNotification('Chapitre ajouté aux favoris');
+        } else {
+            favorites.splice(index, 1);
+            showNotification('Chapitre retiré des favoris');
+        }
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        updateFavoriteIcon(chapterNumber);
+        updateFavoritesPage();
+    }
+    
+    function updateFavoriteIcon(chapterNumber) {
+        const heartIcon = document.getElementById(`favorite-${chapterNumber}`);
+        if (heartIcon) {
+            heartIcon.classList.toggle('active', favorites.includes(chapterNumber));
+            heartIcon.innerHTML = favorites.includes(chapterNumber) ? '<i class="fas fa-bookmark"></i>' : '<i class="far fa-bookmark"></i>';
+        }
+    }
+    
+    function updateFavoritesPage() {
+        const favoritesGrid = document.getElementById('favoritesGrid');
+        if (!favoritesGrid) return;
+        
+        if (favorites.length === 0) {
+            favoritesGrid.innerHTML = '<div class="no-favorites">Aucun chapitre favori pour le moment</div>';
+            return;
+        }
+        
+        favoritesGrid.innerHTML = '';
+        const sortedFavorites = [...favorites].sort((a, b) => a - b);
+        
+        sortedFavorites.forEach(chapterNumber => {
+            const chapter = chapterContents.find(ch => ch.chapter === chapterNumber);
+            if (!chapter) return;
+            
+            const chapterCard = document.createElement('div');
+            chapterCard.className = 'chapter-card';
+            chapterCard.setAttribute('lang', currentLanguage);
+            chapterCard.innerHTML = `
+                <div class="chapter-number">${chapterNumber}</div>
+                <div class="chapter-title">${chapter.title[currentLanguage] || 'Chapitre ' + chapterNumber}</div>
+                <div class="favorite-icon active" id="favorite-fav-${chapterNumber}">
+                    <i class="fas fa-bookmark"></i>
+                </div>
+            `;
+            
+            chapterCard.addEventListener('click', () => {
+                currentChapter = chapterNumber;
+                updateChapterContent();
+                showPage('readingPage');
+            });
+            
+            const favIcon = chapterCard.querySelector('.favorite-icon');
+            favIcon.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFavorite(chapterNumber);
+            });
+            
+            favoritesGrid.appendChild(chapterCard);
+        });
+    }
+    
+    // Fonctions pour la recherche
+    function openSearchModal() {
+        if (!searchModal) return;
+        searchModal.classList.add('active');
+        if (searchInput) searchInput.focus();
+    }
+    
+    function closeSearchModal() {
+        if (!searchModal) return;
+        searchModal.classList.remove('active');
+        if (searchInput) searchInput.value = '';
+        if (searchResults) searchResults.innerHTML = '<div class="no-results">Aucune recherche effectuée</div>';
+    }
+    
+    function performSearch() {
+        if (!searchInput || !searchResults) return;
+        
+        const searchTerm = searchInput.value.trim();
+        searchResults.innerHTML = '';
+        
+        if (searchTerm.length < 2) {
+            searchResults.innerHTML = '<div class="no-results">Veuillez entrer au moins 2 caractères</div>';
+            return;
+        }
+        
+        const results = chapterContents.filter(chapter => {
+            const text = chapter.text[currentLanguage] || '';
+            const title = chapter.title[currentLanguage] || '';
+            return text.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                   title.toLowerCase().includes(searchTerm.toLowerCase());
+        });
+        
+        if (results.length === 0) {
+            searchResults.innerHTML = `<div class="no-results">Aucun résultat trouvé pour "${searchTerm}"</div>`;
+            return;
+        }
+        
+        results.forEach(result => {
+            const resultElement = document.createElement('div');
+            resultElement.className = 'search-result-item';
+            resultElement.innerHTML = `
+                <div class="result-chapter">Chapitre ${result.chapter}: ${result.title[currentLanguage]}</div>
+                <div class="result-text">${highlightText(result.text[currentLanguage], searchTerm)}</div>
+            `;
+            
+            resultElement.addEventListener('click', () => {
+                currentChapter = result.chapter;
+                updateChapterContent();
+                showPage('readingPage');
+                closeSearchModal();
+                highlightSearchTerm(searchTerm);
+            });
+            
+            searchResults.appendChild(resultElement);
+        });
+    }
+    
+    function highlightText(text, term) {
+        if (!text) return '';
+        const regex = new RegExp(`(${term})`, 'gi');
+        return text.replace(regex, '<span class="highlight">$1</span>');
+    }
+    
+    function highlightSearchTerm(term) {
+        if (!contentElement || !term || term.length < 2) return;
+        
+        const oldHighlights = contentElement.querySelectorAll('.highlight');
+        oldHighlights.forEach(el => {
+            const parent = el.parentNode;
+            parent.replaceChild(document.createTextNode(el.textContent), el);
+            parent.normalize();
+        });
+        
+        const regex = new RegExp(`(${term})`, 'gi');
+        contentElement.innerHTML = contentElement.innerHTML.replace(regex, '<span class="highlight">$1</span>');
+        
+        const firstHighlight = contentElement.querySelector('.highlight');
+        if (firstHighlight) {
+            firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+    
+    // Fonction pour les notifications
+    function showNotification(message) {
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.position = 'fixed';
+        toast.style.bottom = '80px';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%)';
+        toast.style.backgroundColor = 'var(--primary)';
+        toast.style.color = 'white';
+        toast.style.padding = '10px 20px';
+        toast.style.borderRadius = '25px';
+        toast.style.zIndex = '1000';
+        toast.style.boxShadow = '0 3px 10px rgba(0, 0, 0, 0.2)';
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            if (document.body.contains(toast)) {
+                document.body.removeChild(toast);
+            }
+        }, 3000);
+    }
+    
+    // Initialiser l'application
+    init();
+});
+</script>
   <script>
 const customizationBtn = document.getElementById("openCustomization");
 const customizationModal = document.getElementById("customizationModal");
