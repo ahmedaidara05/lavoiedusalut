@@ -1129,13 +1129,23 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
 .chapter-card[lang="ar"] {
     direction: rtl;
 }
+      #fontFamily {
+    height: auto;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#fontFamily option {
+    padding: 5px;
+    font-size: 14px;
+}
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <div class="logo">
-    <img src="https://i.postimg.cc/XvD1zDGq/DOC-20250822-WA0033-pdf.png" alt="Logo" class="logo-image">
+   <img src="https://i.postimg.cc/XvD1zDGq/DOC-20250822-WA0033-pdf.png" alt="Logo" class="logo-image" style="border-radius: 0; width: auto; height: 40px;">
                 <span>La Voie du Salut</span>
             </div>
             <div class="header-actions">
@@ -1155,8 +1165,8 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
          alt="Voyage" 
          style="width: 450px; max-width: 100%; height: auto; display: inline-block;">
 </div>
-                <h1>Voyage aux confins de l'imaginaire</h1>
-                <p>Découvrez une histoire captivante à travers 40 chapitres palpitants. Plongez dans un univers unique et laissez-vous emporter par la magie des mots.</p>
+                <h1>Lorsque la plume se confie</h1>
+                    <p>Je frappe la porte de votre âme et laissez-moi vous confier ce petit livret avec sincérité. Ne vous hâtez pas pour le juger, mais commencer par le comprendre. Dans "La Voie du Salut", accéder dans un voyage fascinant, une symphonie enivrante à travers les enseignements et les fondements de l'islam et du christianisme. Plongez dans les mystères de l'identité de Jésus, de même que les récits envoûtants de sa naissance et des comparaisons entre la Bible et le Coran. Ensemble, pénétrons dans la Voie du Salut en toute objectivité et implorons à Dieu de nous guider vers elle. Car «quiconque demande, disait Jésus (Que la paix soit sur lui), reçoit, celui qui cherche trouve, et l'on ouvrira à celui qui frappe». Le Coran révèle ; Raconte le récit. Peut-être réfléchiront-ils. À travers ses pages empreintes de splendeur, ce livre est riche en arguments solides (+800 arguments), soutenus par des références étincelantes. Pénétrer avec délice dans cette lecture enrichissante, exquise, envoûtante, profonde et éclairante qui suscite une réflexion approfondie sur les questions spirituelles les plus fondamentales à l'horizon avec clarté et perspicacité.</p>
                 <button class="btn" id="startReading">
                     <i class="fas fa-book"></i> Commencer la lecture
                 </button>
@@ -1234,8 +1244,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
                 </div>
                 <div class="option-group">
                     <label class="option-label">Police</label>
-                    <select id="fontFamily" class="slider">
-                      <option value="'Great Vibes', cursive">Great Vibes</option>
+<select id="fontFamily" class="slider" size="5">                      <option value="'Great Vibes', cursive">Great Vibes</option>
 
                       <option value="'Allura', cursive">Allura</option>
 <option value="'Courgette', cursive">Courgette</option>
