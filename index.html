@@ -1139,6 +1139,13 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
     padding: 5px;
     font-size: 14px;
 }
+      .chapters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 15px;
+}
     </style>
 </head>
 <body>
@@ -1176,11 +1183,16 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
             </div>
         </div>
 
-        <div class="page" id="chaptersPage">
-            <h2>Table des matières</h2>
-            <div class="chapters-grid" id="chaptersGrid">
-            </div>
-        </div>
+       <div class="page" id="chaptersPage">
+    <div class="chapters-header">
+        <h2>Table des matières</h2>
+        <button class="header-btn" id="toggleFavoritesView">
+            <i class="fas fa-bookmark"></i>
+        </button>
+    </div>
+    <div class="chapters-grid" id="chaptersGrid">
+    </div>
+</div>
             <div class="content-container" id="contentContainer">
 
      <div class="page" id="readingPage">
@@ -1345,6 +1357,84 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
                 <div class="no-favorites">Aucun favori pour le moment</div>
             </div>
         </div>
+              
+              <!-- Ajouter après la page des favoris -->
+<div class="page" id="notesPage">
+    <div class="reading-header">
+        <button class="header-btn" id="backFromNotes">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <h2>Mes Notes</h2>
+        <button class="header-btn" id="addNoteBtn">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+    
+    <div class="notes-container">
+        <div class="notes-sidebar">
+            <div class="notes-categories">
+                <div class="category-item active" data-category="all">
+                    <i class="fas fa-inbox"></i>
+                    <span>Toutes les notes</span>
+                    <span class="notes-count" id="allNotesCount">0</span>
+                </div>
+                <div class="category-item" data-category="favorites">
+                    <i class="fas fa-star"></i>
+                    <span>Favoris</span>
+                    <span class="notes-count" id="favNotesCount">0</span>
+                </div>
+                <!-- Les catégories personnalisées seront ajoutées dynamiquement -->
+            </div>
+            
+            <div class="add-category">
+                <input type="text" id="newCategoryInput" placeholder="Nouvelle catégorie">
+                <button id="addCategoryBtn"><i class="fas fa-plus"></i></button>
+            </div>
+        </div>
+        
+        <div class="notes-content">
+            <div class="notes-list" id="notesList">
+                <!-- Les notes seront ajoutées dynamiquement ici -->
+                <div class="empty-notes">
+                    <i class="fas fa-sticky-note"></i>
+                    <p>Aucune note pour le moment</p>
+                    <button class="btn" id="createFirstNote">Créer une note</button>
+                </div>
+            </div>
+            
+            <div class="note-editor" id="noteEditor">
+                <div class="editor-header">
+                    <input type="text" class="note-title-input" id="noteTitleInput" placeholder="Titre de la note">
+                    <div class="editor-actions">
+                        <button class="header-btn toggle-favorite-note" id="toggleFavoriteNote">
+                            <i class="far fa-star"></i>
+                        </button>
+                        <button class="header-btn" id="deleteNoteBtn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="category-selector">
+                    <select id="noteCategorySelect">
+                        <option value="">Sans catégorie</option>
+                        <!-- Les catégories seront ajoutées dynamiquement -->
+                    </select>
+                </div>
+                
+                <textarea class="note-content-input" id="noteContentInput" placeholder="Commencez à écrire votre note ici..."></textarea>
+                
+                <div class="editor-footer">
+                    <div class="note-info">
+                        <span id="noteDate">Créé le: --</span>
+                        <span id="noteLength">0 caractères</span>
+                    </div>
+                    <button class="btn" id="saveNoteBtn">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
  <div class="page" id="privacyPolicyPage">
     <div class="reading-header">
         <button class="header-btn" id="backFromPrivacy">
@@ -1377,9 +1467,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
             <a href="#" class="nav-item" data-page="readingPage">
                 <i class="fas fa-book nav-icon"></i>
             </a>
-            <a href="#" class="nav-item" data-page="favoritesPage">
-                <i class="fas fa-bookmark nav-icon"></i>
-            </a>
+          
           
         </div>
     </div>
@@ -1436,7 +1524,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const bgOptions = document.querySelectorAll('.bg-option');
     const privacyPolicyLink = document.getElementById('privacyPolicyLink');
     const backFromPrivacy = document.getElementById('backFromPrivacy');
-    
+    const toggleFavoritesViewBtn = document.getElementById('toggleFavoritesView');
+let showingFavorites = false;
     let currentChapter = 1;
     let currentLanguage = localStorage.getItem('language') || 'fr';
     let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
@@ -1935,7 +2024,9 @@ const chapterContents = [
         if (themeToggle) {
             themeToggle.addEventListener('click', toggleTheme);
         }
-        
+        if (toggleFavoritesViewBtn) {
+    toggleFavoritesViewBtn.addEventListener('click', toggleFavoritesView);
+}
         // Paramètres de texte
         if (fontSizeSlider) {
             fontSizeSlider.addEventListener('input', updateFontSize);
@@ -2015,7 +2106,55 @@ const chapterContents = [
             if (item.getAttribute('data-page') === pageId) item.classList.add('active');
         });
     }
+    // Fonction pour basculer entre tous les chapitres et les favoris
+function toggleFavoritesView() {
+    showingFavorites = !showingFavorites;
     
+    if (showingFavorites) {
+        // Afficher seulement les favoris
+        const favoriteChapters = chapterContents.filter(chapter => 
+            favorites.includes(chapter.chapter)
+        );
+        renderChaptersGrid(favoriteChapters);
+        toggleFavoritesViewBtn.innerHTML = '<i class="fas fa-list"></i>';
+    } else {
+        // Afficher tous les chapitres
+        renderChaptersGrid(chapterContents);
+        toggleFavoritesViewBtn.innerHTML = '<i class="fas fa-bookmark"></i>';
+    }
+}
+function renderChaptersGrid(chapters) {
+    if (!chaptersGrid) return;
+    
+    chaptersGrid.innerHTML = '';
+    
+    chapters.forEach(chapter => {
+        const chapterCard = document.createElement('div');
+        chapterCard.className = 'chapter-card';
+        chapterCard.setAttribute('lang', currentLanguage);
+        chapterCard.innerHTML = `
+            <div class="chapter-number">${chapter.chapter}</div>
+            <div class="chapter-title">${chapter.title[currentLanguage] || 'Chapitre ' + chapter.chapter}</div>
+            <div class="favorite-icon" id="favorite-${chapter.chapter}">
+                ${favorites.includes(chapter.chapter) ? '<i class="fas fa-bookmark"></i>' : '<i class="far fa-bookmark"></i>'}
+            </div>
+        `;
+        
+        chapterCard.addEventListener('click', () => {
+            currentChapter = chapter.chapter;
+            updateChapterContent();
+            showPage('readingPage');
+        });
+        
+        const favIcon = chapterCard.querySelector('.favorite-icon');
+        favIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleFavorite(chapter.chapter);
+        });
+        
+        chaptersGrid.appendChild(chapterCard);
+    });
+}
     // Fonctions pour la personnalisation
     function toggleCustomizationPanel() {
         if (!customizationPanel || !navBar) return;
