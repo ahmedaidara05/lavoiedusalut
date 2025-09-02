@@ -749,12 +749,15 @@
             color: var(--accent);
         }
 #readingPage.active {
-    background: url('https://i.postimg.cc/DzTfTR3C/3.png') no-repeat center/cover fixed;
+    background: var(--content-bg) no-repeat center/cover;
     padding: 15px 40px 20px;
     display: flex;
     flex-direction: column;
     height: 100vh;
     overflow-y: auto;
+}
+      .content-container {
+    background: transparent !important;
 }
         .no-favorites {
             text-align: center;
@@ -826,7 +829,131 @@
 #closeCustomization:hover {
     background: #222;
 }
+#fontFamily {
+    width: 100%; /* Prend toute la largeur disponible */
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: var(--card-bg);
+    color: var(--text);
+    font-size: 1rem;
+}
 
+/* Pour agrandir les options dans le menu déroulant */
+#fontFamily option {
+    font-size: 1rem;
+    padding: 8px;
+}
+      .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Augmentez la largeur minimale */
+    gap: 15px;
+}
+      /* Styles pour la page profil */
+.profile-content {
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.profile-form {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+}
+
+.profile-links {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-links a {
+    color: var(--primary);
+    text-decoration: none;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.profile-links a:hover {
+    text-decoration: underline;
+}
+      /* Styles pour le lien de politique de confidentialité */
+.privacy-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.privacy-link a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.privacy-link a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* Styles pour la page de politique de confidentialité */
+.privacy-content {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.privacy-text {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    color: var(--text);
+}
+
+.privacy-text h3 {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    color: var(--primary);
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.privacy-text p, .privacy-text ul {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.privacy-text ul {
+    padding-left: 20px;
+}
+
+.privacy-text li {
+    margin-bottom: 8px;
+}
     </style>
 </head>
 <body>
@@ -856,6 +983,9 @@
                 <button class="btn" id="startReading">
                     <i class="fas fa-book"></i> Commencer la lecture
                 </button>
+               <div class="privacy-link">
+            <a href="#" id="privacyPolicyLink">Politique de confidentialité</a>
+        </div>
             </div>
         </div>
 
@@ -954,7 +1084,48 @@
                 <div class="no-favorites">Aucun chapitre favori pour le moment</div>
             </div>
         </div>
-
+ <div class="page" id="privacyPolicyPage">
+    <div class="reading-header">
+        <button class="header-btn" id="backFromPrivacy">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <h2>Politique de confidentialité</h2>
+    </div>
+    
+    <div class="privacy-content">
+        <div class="privacy-text">
+            <h3>1. Introduction</h3>
+            <p>Bienvenue dans notre politique de confidentialité. Nous accordons une grande importance à la protection de vos données personnelles.</p>
+            
+            <h3>2. Données collectées</h3>
+            <p>Nous collectons les informations que vous nous fournissez directement lorsque vous :</p>
+            <ul>
+                <li>Créez un compte</li>
+                <li>Modifiez votre profil</li>
+                <li>Nous contactez</li>
+            </ul>
+            
+            <h3>3. Utilisation des données</h3>
+            <p>Vos données sont utilisées pour :</p>
+            <ul>
+                <li>Personnaliser votre expérience de lecture</li>
+                <li>Vous permettre d'enregistrer vos préférences</li>
+                <li>Sauvegarder vos marque-pages et favoris</li>
+            </ul>
+            
+            <h3>4. Conservation des données</h3>
+            <p>Nous conservons vos données aussi longtemps que nécessaire pour vous fournir nos services.</p>
+            
+            <h3>5. Vos droits</h3>
+            <p>Vous avez le droit d'accéder, modifier ou supprimer vos données personnelles à tout moment.</p>
+            
+            <h3>6. Contact</h3>
+            <p>Pour toute question concernant cette politique, contactez-nous à : privacy@exemple.com</p>
+            
+            <p>Dernière mise à jour : 01 janvier 2024</p>
+        </div>
+    </div>
+</div>
         <div class="nav-bar">
             <a href="#" class="nav-item active" data-page="homePage">
                 <i class="fas fa-home nav-icon"></i>
@@ -968,6 +1139,7 @@
             <a href="#" class="nav-item" data-page="favoritesPage">
                 <i class="fas fa-bookmark nav-icon"></i>
             </a>
+          
         </div>
     </div>
 
@@ -1021,6 +1193,8 @@
             const searchResults = document.getElementById('searchResults');
             const textColorButtons = document.querySelectorAll('.text-color');
             const bgColorButtons = document.querySelectorAll('.bg-color');
+          const privacyPolicyLink = document.getElementById('privacyPolicyLink');
+const backFromPrivacy = document.getElementById('backFromPrivacy');
             let currentChapter = 1;
             let customTextColor = null;
             let customBgColor = null;
@@ -1232,7 +1406,16 @@
                 document.body.appendChild(toast);
                 setTimeout(() => document.body.removeChild(toast), 3000);
             }
+// Aller à la page politique de confidentialité
+privacyPolicyLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showPage('privacyPolicyPage');
+});
 
+// Retour en arrière depuis la page politique
+backFromPrivacy.addEventListener('click', () => {
+    showPage('homePage');
+});
             function updateFavoritesPage() {
                 const favoritesGrid = document.getElementById('favoritesGrid');
                 if (favorites.length === 0) {
@@ -1397,25 +1580,25 @@ customizationBtn.addEventListener("click", () => {
 closeCustomization.addEventListener("click", () => {
     customizationModal.style.display = "none";
 });
-
-// Quand l'utilisateur clique sur une image
+    
 bgOptions.forEach(option => {
     option.addEventListener("click", () => {
         const selectedBg = option.dataset.bg;
-        readingPage.querySelector(".content-container").style.backgroundImage = `url('${selectedBg}')`;
-
-        // Sauvegarde dans localStorage pour garder le fond même après rechargement
+        
+        // Appliquer l'image à toute la page de lecture
+        readingPage.style.backgroundImage = `url('${selectedBg}')`;
+        
+        // Sauvegarde dans localStorage
         localStorage.setItem("readingBg", selectedBg);
-
         customizationModal.style.display = "none";
     });
 });
 
-// Restaurer le fond choisi à l'ouverture
+
 document.addEventListener("DOMContentLoaded", () => {
     const savedBg = localStorage.getItem("readingBg");
     if (savedBg) {
-        readingPage.querySelector(".content-container").style.backgroundImage = `url('${savedBg}')`;
+        readingPage.style.backgroundImage = `url('${savedBg}')`;
     }
 });
 </script>
