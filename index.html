@@ -954,13 +954,75 @@
 .privacy-text li {
     margin-bottom: 8px;
 }
+      /* Styles pour les options de couleur des barres */
+.header-color.green { background-color: #2e7d32; }
+.header-color.blue { background-color: #1976d2; }
+.header-color.purple { background-color: #7b1fa2; }
+.header-color.dark { background-color: #121212; }
+.header-color.brown { background-color: #5d4037; }
+.header-color.red { background-color: #d32f2f; }
+
+.footer-color.green { background-color: #2e7d32; }
+.footer-color.blue { background-color: #1976d2; }
+.footer-color.purple { background-color: #7b1fa2; }
+.footer-color.dark { background-color: #121212; }
+.footer-color.brown { background-color: #5d4037; }
+.footer-color.red { background-color: #d32f2f; }
+      /* Styles pour les options de couleur de fond */
+.app-bg-color.default { background-color: #d2c9a3; }
+.app-bg-color.light-blue { background-color: #e3f2fd; }
+.app-bg-color.light-green { background-color: #e8f5e9; }
+.app-bg-color.light-pink { background-color: #fce4ec; }
+.app-bg-color.light-beige { background-color: #f5f5dc; }
+.app-bg-color.light-gray { background-color: #f5f5f5; }
+.app-bg-color.dark { background-color: #1a1a1a; }
+
+/* Assurez-vous que le fond s'applique à tout le body */
+body {
+    background-color: var(--app-bg-color, #d2c9a3);
+    transition: background-color 0.3s ease;
+}
+      /* Styles pour les options de couleur de texte global */
+.text-all-color.black { background-color: #000000; }
+.text-all-color.white { background-color: #ffffff; border: 1px solid #ccc; }
+.text-all-color.dark-blue { background-color: #1a365d; }
+.text-all-color.dark-brown { background-color: #5c4a3c; }
+.text-all-color.dark-green { background-color: #2d5016; }
+.text-all-color.dark-red { background-color: #7b341e; }
+.text-all-color.gray { background-color: #4a5568; }
+
+/* Appliquer la couleur du texte à tous les éléments de base */
+body {
+    color: var(--global-text-color, #000000);
+    transition: color 0.3s ease;
+}
+
+/* Assurez-vous que les titres et textes utilisent cette variable */
+h1, h2, h3, h4, h5, h6, p, span, div, a, li {
+    color: inherit;
+}
+
+/* Exceptions pour certains éléments qui pourraient avoir des couleurs spécifiques */
+.header-btn, .nav-item {
+    color: white !important; /* Garder le contraste avec les barres colorées */
+}
+
+/* Pour la page de lecture, utilisez aussi la couleur globale */
+.reading-page, .content {
+    color: var(--global-text-color, #000000);
+}
+
+/* Pour les autres pages */
+.page:not(#readingPage) {
+    color: var(--global-text-color, #000000);
+}
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <div class="logo">
-                <i class="fas fa-book-open"></i>
+    <img src="https://i.postimg.cc/your-image-code/your-image.jpg" alt="Logo" class="logo-image">
                 <span>La Voie du Salut</span>
             </div>
             <div class="header-actions">
@@ -1076,6 +1138,53 @@
     </div>
                 </div>
             </div>
+          <div class="option-group">
+    <label class="option-label">Couleur de la barre supérieure</label>
+    <div class="color-options">
+        <button class="color-btn header-color green active" data-color="#2e7d32"></button>
+        <button class="color-btn header-color blue" data-color="#1976d2"></button>
+        <button class="color-btn header-color purple" data-color="#7b1fa2"></button>
+        <button class="color-btn header-color dark" data-color="#121212"></button>
+        <button class="color-btn header-color brown" data-color="#5d4037"></button>
+        <button class="color-btn header-color red" data-color="#d32f2f"></button>
+    </div>
+</div>
+
+<div class="option-group">
+    <label class="option-label">Couleur de la barre inférieure</label>
+    <div class="color-options">
+        <button class="color-btn footer-color green active" data-color="#2e7d32"></button>
+        <button class="color-btn footer-color blue" data-color="#1976d2"></button>
+        <button class="color-btn footer-color purple" data-color="#7b1fa2"></button>
+        <button class="color-btn footer-color dark" data-color="#121212"></button>
+        <button class="color-btn footer-color brown" data-color="#5d4037"></button>
+        <button class="color-btn footer-color red" data-color="#d32f2f"></button>
+    </div>
+</div>
+          <div class="option-group">
+    <label class="option-label">Couleur de fond de l'application</label>
+    <div class="color-options">
+        <button class="color-btn app-bg-color default active" data-color="#d2c9a3"></button>
+        <button class="color-btn app-bg-color light-blue" data-color="#e3f2fd"></button>
+        <button class="color-btn app-bg-color light-green" data-color="#e8f5e9"></button>
+        <button class="color-btn app-bg-color light-pink" data-color="#fce4ec"></button>
+        <button class="color-btn app-bg-color light-beige" data-color="#f5f5dc"></button>
+        <button class="color-btn app-bg-color light-gray" data-color="#f5f5f5"></button>
+        <button class="color-btn app-bg-color dark" data-color="#1a1a1a"></button>
+    </div>
+</div>
+          <div class="option-group">
+    <label class="option-label">Couleur du texte (toutes les pages)</label>
+    <div class="color-options">
+        <button class="color-btn text-all-color black active" data-color="#000000"></button>
+        <button class="color-btn text-all-color white" data-color="#ffffff"></button>
+        <button class="color-btn text-all-color dark-blue" data-color="#1a365d"></button>
+        <button class="color-btn text-all-color dark-brown" data-color="#5c4a3c"></button>
+        <button class="color-btn text-all-color dark-green" data-color="#2d5016"></button>
+        <button class="color-btn text-all-color dark-red" data-color="#7b341e"></button>
+        <button class="color-btn text-all-color gray" data-color="#4a5568"></button>
+    </div>
+</div>
         </div>
 
         <div class="page" id="favoritesPage">
@@ -1199,6 +1308,12 @@ const backFromPrivacy = document.getElementById('backFromPrivacy');
             let customTextColor = null;
             let customBgColor = null;
             let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+          let headerColor = localStorage.getItem('headerColor') || '#2e7d32';
+let footerColor = localStorage.getItem('footerColor') || '#2e7d32';
+          let appBgColor = localStorage.getItem('appBgColor') || '#d2c9a3';
+          let globalTextColor = localStorage.getItem('globalTextColor') || '#000000';
+
+
             const totalChapters = 40;
 
             const chapterContents = [
@@ -1406,6 +1521,66 @@ const backFromPrivacy = document.getElementById('backFromPrivacy');
                 document.body.appendChild(toast);
                 setTimeout(() => document.body.removeChild(toast), 3000);
             }
+          // Fonction pour appliquer la couleur du texte global
+function applyGlobalTextColor(color) {
+    document.documentElement.style.setProperty('--global-text-color', color);
+    globalTextColor = color;
+    localStorage.setItem('globalTextColor', color);
+}
+
+// Mettre en surbrillance la couleur de texte sélectionnée
+function highlightSelectedTextColor() {
+    // Supprimer la sélection actuelle
+    document.querySelectorAll('.text-all-color').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Sélectionner la couleur sauvegardée
+    document.querySelectorAll('.text-all-color').forEach(btn => {
+        if (btn.getAttribute('data-color') === globalTextColor) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+// Gestion des clics sur les options de couleur de texte global
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('text-all-color')) {
+        const color = e.target.getAttribute('data-color');
+        applyGlobalTextColor(color);
+        highlightSelectedTextColor();
+    }
+});
+          // Fonction pour appliquer la couleur de fond
+function applyAppBgColor(color) {
+    document.documentElement.style.setProperty('--app-bg-color', color);
+    appBgColor = color;
+    localStorage.setItem('appBgColor', color);
+}
+
+// Mettre en surbrillance la couleur sélectionnée
+function highlightSelectedAppBgColor() {
+    // Supprimer la sélection actuelle
+    document.querySelectorAll('.app-bg-color').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Sélectionner la couleur sauvegardée
+    document.querySelectorAll('.app-bg-color').forEach(btn => {
+        if (btn.getAttribute('data-color') === appBgColor) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+// Gestion des clics sur les options de couleur de fond
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('app-bg-color')) {
+        const color = e.target.getAttribute('data-color');
+        applyAppBgColor(color);
+        highlightSelectedAppBgColor();
+    }
+});
 // Aller à la page politique de confidentialité
 privacyPolicyLink.addEventListener('click', (e) => {
     e.preventDefault();
@@ -1415,6 +1590,67 @@ privacyPolicyLink.addEventListener('click', (e) => {
 // Retour en arrière depuis la page politique
 backFromPrivacy.addEventListener('click', () => {
     showPage('homePage');
+});
+          // Appliquer les couleurs au chargement
+document.addEventListener('DOMContentLoaded', function() {
+    applyHeaderColor(headerColor);
+    applyFooterColor(footerColor);
+    
+    // Mettre en surbrillance les couleurs sélectionnées
+    highlightSelectedColors();
+});
+
+// Fonctions pour appliquer les couleurs
+function applyHeaderColor(color) {
+    const header = document.querySelector('header');
+    header.style.backgroundColor = color;
+    headerColor = color;
+    localStorage.setItem('headerColor', color);
+}
+
+function applyFooterColor(color) {
+    const footer = document.querySelector('.nav-bar');
+    footer.style.backgroundColor = color;
+    footerColor = color;
+    localStorage.setItem('footerColor', color);
+}
+
+// Mettre en surbrillance les couleurs sélectionnées
+function highlightSelectedColors() {
+    // Supprimer la sélection actuelle
+    document.querySelectorAll('.header-color, .footer-color').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Sélectionner les couleurs sauvegardées
+    document.querySelectorAll('.header-color').forEach(btn => {
+        if (btn.getAttribute('data-color') === headerColor) {
+            btn.classList.add('active');
+        }
+    });
+    
+    document.querySelectorAll('.footer-color').forEach(btn => {
+        if (btn.getAttribute('data-color') === footerColor) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+// Gestion des clics sur les nouvelles options de couleur
+document.addEventListener('click', function(e) {
+    // Couleur de la barre supérieure
+    if (e.target.classList.contains('header-color')) {
+        const color = e.target.getAttribute('data-color');
+        applyHeaderColor(color);
+        highlightSelectedColors();
+    }
+    
+    // Couleur de la barre inférieure
+    if (e.target.classList.contains('footer-color')) {
+        const color = e.target.getAttribute('data-color');
+        applyFooterColor(color);
+        highlightSelectedColors();
+    }
 });
             function updateFavoritesPage() {
                 const favoritesGrid = document.getElementById('favoritesGrid');
@@ -1605,3 +1841,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
+
+
