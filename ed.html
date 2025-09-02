@@ -1149,10 +1149,10 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
       /* Styles pour la page de notes */
 .notes-container {
     display: flex;
-    height: calc(100vh - 150px);
-    background: var(--app-bg-color);
+    height: auto; /* Changement important */
+    min-height: calc(100vh - 120px); /* Hauteur minimale */
+    margin-top: 20px;
 }
-
 .notes-sidebar {
     width: 250px;
     border-right: 1px solid #e0e0e0;
@@ -1301,10 +1301,15 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
 }
 
 .note-editor {
-    flex-grow: 1;
+    flex: 1;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    height: auto; /* S'adapte au contenu */
+    overflow: visible; /* Pas de défilement */
 }
 
 .editor-header {
@@ -1352,10 +1357,13 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
     padding: 15px;
     border: 1px solid #eee;
     border-radius: 4px;
-    resize: none;
+    resize: vertical; /* Permet le redimensionnement manuel seulement */
     font-family: inherit;
     line-height: 1.5;
     margin-bottom: 15px;
+    min-height: 400px; /* Hauteur minimale */
+    height: auto; /* S'adapte au contenu */
+    overflow: visible; /* Pas de défilement */
 }
 
 .note-content-input:focus {
@@ -1551,6 +1559,55 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     animation: fadeIn 0.3s;
+    overflow: auto; /* Permet le défilement de toute la modal si nécessaire */
+} 
+.note-modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 0;
+    width: 80%;
+     border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s;
+    max-height: none; /* Cette ligne empêche la limitation de hauteur */
+    display: flex;
+    flex-direction: column;
+}
+.note-modal-body {
+    overflow-y: visible; /* Au lieu de auto pour éviter les barres de défilement */
+}
+.note-modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.note-modal-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.8rem;
+}
+
+.close-modal {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.note-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    animation: fadeIn 0.3s;
+    overflow-y: auto; /* Permet de scroller toute la modal si nécessaire */
 }
 
 .note-modal-content {
@@ -1563,11 +1620,16 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
     border-radius: 10px;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
     animation: slideIn 0.3s;
-    max-height: 80vh;
-    display: flex;
-    flex-direction: column;
+    height: auto; /* Changement important */
+    max-height: none; /* Supprime la limitation de hauteur */
 }
 
+.note-modal-body {
+    padding: 25px;
+    overflow-y: visible; /* Empêche les barres de défilement internes */
+}
+
+/* Le reste de votre CSS reste inchangé */
 .note-modal-header {
     padding: 20px;
     border-bottom: 1px solid #e0e0e0;
@@ -1593,6 +1655,66 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
     color: #000;
 }
 
+.note-modal-body p {
+    line-height: 1.8;
+    font-size: 1.1rem;
+    color: #333;
+    white-space: pre-wrap;
+}
+
+.note-modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#modalNoteCategory {
+    background-color: #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .note-modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+    
+    .note-modal-header h2 {
+        font-size: 1.4rem;
+    }
+    
+    .note-modal-body {
+        padding: 15px;
+    }
+}
+.close-modal:hover {
+    color: #000;
+}
+
 .note-modal-body {
     padding: 25px;
     overflow-y: auto;
@@ -1604,6 +1726,12 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
     font-size: 1.1rem;
     color: #333;
     white-space: pre-wrap;
+}
+#toggleFavoriteNote i {
+    color: #FFD700; /* Jaune doré */
+}
+#deleteNoteBtn i {
+    color: #FFD700; /* Jaune doré */
 }
 
 .note-modal-footer {
@@ -1914,14 +2042,15 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
             <div class="note-editor" id="noteEditor">
                 <div class="editor-header">
                     <input type="text" class="note-title-input" id="noteTitleInput" placeholder="Titre de la note">
-                    <div class="editor-actions">
-                        <button class="header-btn toggle-favorite-note" id="toggleFavoriteNote">
-                            <i class="far fa-star"></i>
-                        </button>
-                        <button class="header-btn" id="deleteNoteBtn">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
+                 <div class="editor-actions">
+    <button class="header-btn toggle-favorite-note" id="toggleFavoriteNote">
+        <i class="far fa-star" style="color: #FFD700;"></i>
+    </button>
+    <button class="header-btn" id="deleteNoteBtn">
+        <i class="fas fa-trash"></i>
+    </button>
+</div>
+
                 </div>
                 
                 <div class="category-selector">
@@ -3116,43 +3245,38 @@ function renderNotesList() {
         document.querySelector('[data-category="all"]').classList.add('active');
     }
 }
-function deleteCurrentNote() {
+  function deleteCurrentNote() {
     if (!currentNoteId) return;
+
+    // Supprime directement sans demander confirmation
+    const noteToDelete = notes.find(note => note.id === currentNoteId);
+    const noteCategory = noteToDelete ? noteToDelete.category : '';
     
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette note ?')) {
-        // Trouver la note avant suppression pour connaître sa catégorie
-        const noteToDelete = notes.find(note => note.id === currentNoteId);
-        const noteCategory = noteToDelete ? noteToDelete.category : '';
-        
-        notes = notes.filter(note => note.id !== currentNoteId);
-        
-        saveNotesToStorage();
-        updateNotesCount();
-        
-        // Si on était en train de visualiser une catégorie spécifique
-        // et qu'on vient de supprimer la dernière note de cette catégorie
-        if (currentCategory !== 'all' && currentCategory !== 'favorites') {
-            const categoryNotes = notes.filter(note => note.category === currentCategory);
-            if (categoryNotes.length === 0) {
-                // Revenir à "Toutes les notes" si la catégorie est maintenant vide
-                currentCategory = 'all';
-                document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
-                document.querySelector('[data-category="all"]').classList.add('active');
-            }
+    notes = notes.filter(note => note.id !== currentNoteId);
+    
+    saveNotesToStorage();
+    updateNotesCount();
+    
+    if (currentCategory !== 'all' && currentCategory !== 'favorites') {
+        const categoryNotes = notes.filter(note => note.category === currentCategory);
+        if (categoryNotes.length === 0) {
+            currentCategory = 'all';
+            document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+            document.querySelector('[data-category="all"]').classList.add('active');
         }
-        
-        renderNotesList();
-        
-        // Cacher l'éditeur et afficher la liste
-        document.getElementById('noteEditor').style.display = 'none';
-        document.getElementById('notesList').style.display = 'block';
-        
-        // Réinitialiser l'ID de note courante
-        currentNoteId = null;
-         
-        showNotification('Note supprimée');
     }
+    
+    renderNotesList();
+    
+    document.getElementById('noteEditor').style.display = 'none';
+    document.getElementById('notesList').style.display = 'block';
+    
+    currentNoteId = null;
+
+    // Si tu veux garder la notification "Note supprimée"
+    showNotification('Note supprimée');
 }
+
 function saveCurrentNote() {
     if (!currentNoteId) return;
     
