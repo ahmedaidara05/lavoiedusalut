@@ -1458,6 +1458,203 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
 .dark-theme .notes-list {
     border-color: #444;
 }
+      /* Conteneur principal des notes */
+.notes-container {
+    display: flex;
+    height: calc(100vh - 120px);
+    margin-top: 20px;
+}
+
+/* Liste des notes (sidebar) */
+.notes-sidebar {
+    width: 300px;
+    border-right: 1px solid #e0e0e0;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Éditeur de note (contenu principal) */
+.note-editor {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* En-tête de l'éditeur */
+.note-editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Champs de formulaire */
+.note-title-input {
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: none;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+    width: 100%;
+}
+
+.note-content-input {
+    flex: 1;
+    border: none;
+    padding: 15px;
+    resize: none;
+    line-height: 1.6;
+    font-family: inherit;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+/* Pied de l'éditeur */
+.note-editor-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .notes-container {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .notes-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+    }
+}
+      /* Fenêtre modale pour les notes */
+.note-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    animation: fadeIn 0.3s;
+}
+
+.note-modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 0;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.note-modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.note-modal-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.8rem;
+}
+
+.close-modal {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+    color: #000;
+}
+
+.note-modal-body {
+    padding: 25px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.note-modal-body p {
+    line-height: 1.8;
+    font-size: 1.1rem;
+    color: #333;
+    white-space: pre-wrap;
+}
+
+.note-modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#modalNoteCategory {
+    background-color: #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .note-modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+    
+    .note-modal-header h2 {
+        font-size: 1.4rem;
+    }
+    
+    .note-modal-body {
+        padding: 15px;
+    }
+}
     </style>
 </head>
 <body>
@@ -1744,6 +1941,22 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
                     <button class="btn" id="saveNoteBtn">Enregistrer</button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+              <!-- Ajoutez ceci dans votre body -->
+<div id="noteModal" class="note-modal">
+    <div class="note-modal-content">
+        <div class="note-modal-header">
+            <h2 id="modalNoteTitle"></h2>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="note-modal-body">
+            <p id="modalNoteContent"></p>
+        </div>
+        <div class="note-modal-footer">
+            <span id="modalNoteDate"></span>
+            <span id="modalNoteCategory"></span>
         </div>
     </div>
 </div>
@@ -3056,18 +3269,21 @@ function renderCategories() {
         document.querySelector('[data-category="all"]').classList.add('active');
     }
 }
-function renderNotesList() {
+    function renderNotesList() {
     const notesList = document.getElementById('notesList');
     let filteredNotes = [];
     
     // Filtrer les notes selon la catégorie sélectionnée
     if (currentCategory === 'all') {
-        filteredNotes = notes;
+        filteredNotes = [...notes];
     } else if (currentCategory === 'favorites') {
         filteredNotes = notes.filter(note => note.isFavorite);
     } else {
         filteredNotes = notes.filter(note => note.category === currentCategory);
     }
+    
+    // Trier les notes par date de modification (plus récent en premier)
+    filteredNotes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
     
     if (filteredNotes.length === 0) {
         notesList.innerHTML = `
@@ -3078,10 +3294,18 @@ function renderNotesList() {
             </div>
         `;
         document.getElementById('createFirstNote').addEventListener('click', createNewNote);
+        
+        // Cacher l'éditeur s'il n'y a pas de notes
+        document.getElementById('noteEditor').style.display = 'none';
         return;
     }
     
     notesList.innerHTML = '';
+    
+    // Afficher automatiquement la première note en plein écran
+    const firstNote = filteredNotes[0];
+    currentNoteId = firstNote.id;
+    openNoteEditor(firstNote);
     
     filteredNotes.forEach(note => {
         const noteItem = document.createElement('div');
@@ -3097,23 +3321,21 @@ function renderNotesList() {
             </div>
             <p class="note-item-preview">${note.content.substring(0, 100)}${note.content.length > 100 ? '...' : ''}</p>
             ${note.category ? `<span class="note-item-category">${note.category}</span>` : ''}
-            ${note.isFavorite ? '<i class="fas fa-star" style="color: #ffc107; float: right; margin-top: 5px;"></i>' : ''}
+            ${note.isFavorite ? '<i class="fas fa-star favorite-indicator"></i>' : ''}
         `;
         
         noteItem.addEventListener('click', () => {
             currentNoteId = note.id;
-            renderNotesList();
+            renderNotesList(); // Rafraîchir pour mettre à jour la sélection
             openNoteEditor(note);
-            
-            // Sur mobile, afficher l'éditeur et masquer la liste
-            if (window.innerWidth < 768) {
-                document.getElementById('noteEditor').style.display = 'flex';
-                document.getElementById('notesList').style.display = 'none';
-            }
         });
         
         notesList.appendChild(noteItem);
     });
+    
+    // Afficher l'éditeur en plein écran
+    document.getElementById('noteEditor').style.display = 'flex';
+    document.getElementById('notesList').style.display = 'block';
 }
 
 function updateNotesCount() {
