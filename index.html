@@ -254,13 +254,22 @@
         }
 
         .reading-header {
+          
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
             z-index: 10;
         }
+.reading-header .header-btn {
+    background-color: rgba(255, 215, 0, 0.2) !important; /* Fond jaune doré avec 80% d'opacité */
+    color: #fff !important; /* Garde les icônes blanches */
+    transition: background-color 0.3s ease;
+}
 
+.reading-header .header-btn:hover {
+    background-color: rgba(255, 215, 0, 1) !important; /* Fond jaune doré plein au survol */
+}
         .chapter-indicator {
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.4rem;
