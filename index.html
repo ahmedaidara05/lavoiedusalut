@@ -1065,7 +1065,7 @@ body {
 
 /* Appliquer la couleur du texte à tous les éléments de base */
 body {
-    color: var(--global-text-color, #000000);
+    color: var(--global-text-color, #2e7d32);
     transition: color 0.3s ease;
 }
 
@@ -1976,6 +1976,84 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
     left: 10px !important;
     right: auto !important;
 }
+      /* === Fenêtre modale élégante === */
+.protection-modal {
+  display: none; /* Masqué par défaut */
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  justify-content: center;
+  align-items: center;
+}
+
+.protection-content {
+  background-color: #fff;
+  padding: 25px;
+  width: 350px;
+  max-width: 90%;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.protection-content h2 {
+  margin-top: 0;
+  color: #222;
+  font-size: 20px;
+}
+
+.protection-content p {
+  color: #555;
+  font-size: 15px;
+  margin: 10px 0 20px;
+}
+
+#protectionBtn {
+  background-color: #0078ff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#protectionBtn:hover {
+  background-color: #005ecc;
+}
+
+.protection-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  color: #999;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.protection-close:hover {
+  color: #333;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
     </style>
 </head>
 <body>
@@ -3472,57 +3550,78 @@ function saveNotesToStorage() {
 function saveCategoriesToStorage() {
     localStorage.setItem('noteCategories', JSON.stringify(categories));
 }
-    // ========== PROTECTION CONTENU - LA VOIE DU SALUT ==========
+  // ================== PROTECTION CONTENU - LA VOIE DU SALUT ==================
 
-// 1. Désactiver le clic droit
+// --- Fonction pour afficher la modale ---
+function showProtectionMessage(message) {
+    const modal = document.getElementById("protectionModal");
+    const msg = document.getElementById("protectionMessage");
+    msg.innerHTML = message;
+    modal.style.display = "flex";
+
+    // Fermer la modale
+    document.querySelector(".protection-close").onclick = () => modal.style.display = "none";
+    document.getElementById("protectionBtn").onclick = () => modal.style.display = "none";
+    window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+}
+
+// --- 1. Désactiver le clic droit sauf sur les liens externes ---
 document.addEventListener("contextmenu", function (e) {
+    const target = e.target.closest("a");
+    if (target && target.hostname !== window.location.hostname) {
+        // Lien externe → autoriser
+        return;
+    }
     e.preventDefault();
-    alert("🚫 Action interdite : Le contenu est protégé !");
+    showProtectionMessage("🚫 Clic droit désactivé pour protéger le contenu.");
 });
 
-// 2. Bloquer la sélection de texte
+// --- 2. Bloquer la sélection de texte ---
 document.addEventListener("selectstart", function (e) {
     e.preventDefault();
+    showProtectionMessage("🚫 La sélection de texte est interdite.");
 });
 
-// 3. Bloquer le copier-coller
+// --- 3. Bloquer le copier-coller ---
 document.addEventListener("copy", function (e) {
     e.preventDefault();
-    alert("🚫 Copier le texte n'est pas autorisé !");
+    showProtectionMessage("🚫 Copier le texte n'est pas autorisé !");
 });
 document.addEventListener("cut", function (e) {
     e.preventDefault();
+    showProtectionMessage("🚫 Couper le texte est interdit !");
 });
 document.addEventListener("paste", function (e) {
     e.preventDefault();
+    showProtectionMessage("🚫 Coller du contenu est désactivé !");
 });
 
-// 4. Bloquer les raccourcis clavier dangereux
+// --- 4. Bloquer les raccourcis clavier dangereux ---
 document.addEventListener("keydown", function (e) {
-    // Liste des touches bloquées : F12, Ctrl+S, Ctrl+U, Ctrl+P, Ctrl+C, Ctrl+X, Ctrl+Shift+I
     if (
         e.key === "F12" ||
         (e.ctrlKey && ["s", "S", "u", "U", "p", "P", "c", "C", "x", "X"].includes(e.key)) ||
         (e.ctrlKey && e.shiftKey && ["i", "I", "j", "J", "c", "C"].includes(e.key))
     ) {
         e.preventDefault();
-        alert("🚫 Cette action est bloquée pour protéger le livre.");
+        showProtectionMessage("🚫 Cette action est bloquée pour protéger le livre.");
     }
 });
 
-// 5. Empêcher le partage natif (mobile)
+// --- 5. Empêcher le partage natif mobile ---
 if (navigator.share) {
     navigator.share = function () {
-        alert("🚫 Le partage est désactivé pour protéger le contenu !");
+        showProtectionMessage("🚫 Le partage est désactivé pour protéger le contenu !");
     };
 }
 
-// 6. Désactiver le glisser-déposer d’éléments (images, textes…)
+// --- 6. Désactiver le glisser-déposer ---
 document.addEventListener("dragstart", function (e) {
     e.preventDefault();
+    showProtectionMessage("🚫 Le glisser-déposer est désactivé !");
 });
 
-// 7. Empêcher l’impression de la page
+// --- 7. Empêcher l’impression de la page ---
 (function () {
     const style = document.createElement("style");
     style.type = "text/css";
@@ -3531,14 +3630,15 @@ document.addEventListener("dragstart", function (e) {
     document.head.appendChild(style);
 })();
 
-// 8. Bloquer la console (empêcher l'inspection via F12 ou DevTools)
+// --- 8. Bloquer l'inspection via DevTools ---
 (function () {
     const devtools = /./;
     devtools.toString = function () {
-        throw "🚫 L'inspection est bloquée pour protéger le contenu.";
+        throw "🚫 Inspection du code interdite.";
     };
     console.log("%c ", devtools);
 })();
+
  
     // Fonctions pour les chapitres et favoris
     function updateChaptersGrid() {
@@ -3956,5 +4056,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // Optional : si tu veux que cliquer sur un chapitre fasse quelque chose, on peut ajouter un listener ici.
   })();
 </script>
+      <!-- Fenêtre modale personnalisée -->
+<div id="protectionModal" class="protection-modal">
+  <div class="protection-content">
+    <span class="protection-close">&times;</span>
+    <h2>🔒 Contenu protégé</h2>
+    <p id="protectionMessage">
+      Cette action est interdite pour protéger le livre <b>La Voie du Salut</b>.
+    </p>
+    <button id="protectionBtn">OK</button>
+  </div>
+</div>
+
 </body>
 </html>   
