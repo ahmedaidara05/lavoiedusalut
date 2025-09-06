@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politique de confidentialité - La Voie du Salut</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .reading-header {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .header-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .reading-header h2 {
+            font-weight: 500;
+            font-size: 1.5rem;
+        }
+        
+        .privacy-content {
+            padding: 30px;
+        }
+        
+        .privacy-text {
+            line-height: 1.7;
+            color: #333;
+        }
+        
+        .privacy-text p {
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+        
+        .privacy-text b {
+            color: #4b6cb7;
+            font-weight: 600;
+        }
+        
+        .privacy-text p:last-child {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-style: italic;
+        }
+        
+        @media (max-width: 600px) {
+            .privacy-content {
+                padding: 20px;
+            }
+            
+            .reading-header {
+                padding: 15px;
+            }
+            
+            .reading-header h2 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page" id="privacyPolicyPage">
+            <div class="reading-header">
+                <button class="header-btn" id="backFromPrivacy">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Politique de confidentialité</h2>
+            </div>
+            
+            <div class="privacy-content">
+                <div class="privacy-text">
+                    <p>Notre application LA VOIE DU SALUT est uniquement destinée à la lecture et au vente du livre.</p>
+                
+                <p><b>Aucune donnée personnelle n'est collectée</b>, aucun suivi n'est effectué, aucun compte n'est demandé, et rien n'est envoyé ou stocké en ligne.</p>
+                        <p>Les <b>chapitres </b> dans la page sommaire sont entièrement <b>gratuits</b>. Le reste est payant et accessible dans le site dont le lien est disponible dans la section complète des chapitres.</p>
+
+                <p>Vous pouvez lire votre livre en toute tranquillité, en toute sécurité et en toute confidentialité.</p>
+                
+                <p>Dernière mise à jour : 01 septembre 2025</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fonctionnalité pour le bouton de retour
+        document.getElementById('backFromPrivacy').addEventListener('click', function() {
+            alert('Retour à la page précédente');
+            // Dans une application réelle, vous utiliseriez:
+            // window.history.back(); 
+            // ou une fonction de navigation de votre framework
+        });
+    </script>
+</body>
+</html>
