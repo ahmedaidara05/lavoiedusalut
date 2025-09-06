@@ -3556,7 +3556,7 @@ function saveNotesToStorage() {
 function saveCategoriesToStorage() {
     localStorage.setItem('noteCategories', JSON.stringify(categories));
 }
-  // ================== PROTECTION CONTENU - LA VOIE DU SALUT ==================
+ // ================== PROTECTION CONTENU - LA VOIE DU SALUT ==================
 
 // --- Fonction pour afficher la modale ---
 function showProtectionMessage(message) {
@@ -3582,11 +3582,9 @@ document.addEventListener("contextmenu", function (e) {
     showProtectionMessage("🚫 Clic droit désactivé pour protéger le contenu.");
 });
 
-// --- 2. Bloquer la sélection de texte ---
-document.addEventListener("selectstart", function (e) {
-    e.preventDefault();
-    showProtectionMessage("🚫 La sélection de texte est interdite.");
-});
+// --- 2. **Permettre la sélection du texte** (assoupli) ---
+// ❌ Ancien code supprimé → avant ça bloquait TOUS les clics et sélections
+// ✅ Maintenant on laisse l'utilisateur sélectionner le texte sans déclencher la modale
 
 // --- 3. Bloquer le copier-coller ---
 document.addEventListener("copy", function (e) {
@@ -3605,7 +3603,7 @@ document.addEventListener("paste", function (e) {
 // --- 4. Bloquer les raccourcis clavier dangereux ---
 document.addEventListener("keydown", function (e) {
     if (
-        e.key === "F12" ||
+        e.key === "F12" || // DevTools
         (e.ctrlKey && ["s", "S", "u", "U", "p", "P", "c", "C", "x", "X"].includes(e.key)) ||
         (e.ctrlKey && e.shiftKey && ["i", "I", "j", "J", "c", "C"].includes(e.key))
     ) {
