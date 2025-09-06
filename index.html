@@ -1851,6 +1851,35 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
 .dark-theme .search-result-item:hover {
     background-color: rgba(76, 175, 80, 0.1);
 }
+      /* Alignement spécifique pour l'arabe */
+.language-ar .chapter-number {
+    text-align: right;
+    display: block;
+    unicode-bidi: isolate; /* Isoler la direction du texte */
+}
+
+.language-ar .chapters-grid {
+    direction: rtl;
+}
+      /* Forcer l'alignement à gauche pour les favoris */
+#favoritesPage .chapters-grid {
+    direction: ltr !important;
+}
+
+#favoritesPage .chapter-card {
+    text-align: left !important;
+}
+
+#favoritesPage .chapter-number {
+    text-align: left !important;
+    direction: ltr !important;
+}
+
+/* Style pour l'icône de favoris dans la page des favoris */
+#favoritesPage .favorite-icon {
+    left: 10px !important;
+    right: auto !important;
+}
     </style>
 </head>
 <body>
@@ -3567,7 +3596,74 @@ function saveNotesToStorage() {
 function saveCategoriesToStorage() {
     localStorage.setItem('noteCategories', JSON.stringify(categories));
 }
-    
+    // ========== PROTECTION CONTENU - LA VOIE DU SALUT ==========
+
+// 1. Désactiver le clic droit
+document.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+    alert("🚫 Action interdite : Le contenu est protégé !");
+});
+
+// 2. Bloquer la sélection de texte
+document.addEventListener("selectstart", function (e) {
+    e.preventDefault();
+});
+
+// 3. Bloquer le copier-coller
+document.addEventListener("copy", function (e) {
+    e.preventDefault();
+    alert("🚫 Copier le texte n'est pas autorisé !");
+});
+document.addEventListener("cut", function (e) {
+    e.preventDefault();
+});
+document.addEventListener("paste", function (e) {
+    e.preventDefault();
+});
+
+// 4. Bloquer les raccourcis clavier dangereux
+document.addEventListener("keydown", function (e) {
+    // Liste des touches bloquées : F12, Ctrl+S, Ctrl+U, Ctrl+P, Ctrl+C, Ctrl+X, Ctrl+Shift+I
+    if (
+        e.key === "F12" ||
+        (e.ctrlKey && ["s", "S", "u", "U", "p", "P", "c", "C", "x", "X"].includes(e.key)) ||
+        (e.ctrlKey && e.shiftKey && ["i", "I", "j", "J", "c", "C"].includes(e.key))
+    ) {
+        e.preventDefault();
+        alert("🚫 Cette action est bloquée pour protéger le livre.");
+    }
+});
+
+// 5. Empêcher le partage natif (mobile)
+if (navigator.share) {
+    navigator.share = function () {
+        alert("🚫 Le partage est désactivé pour protéger le contenu !");
+    };
+}
+
+// 6. Désactiver le glisser-déposer d’éléments (images, textes…)
+document.addEventListener("dragstart", function (e) {
+    e.preventDefault();
+});
+
+// 7. Empêcher l’impression de la page
+(function () {
+    const style = document.createElement("style");
+    style.type = "text/css";
+    style.media = "print";
+    style.appendChild(document.createTextNode("body { display: none !important; }"));
+    document.head.appendChild(style);
+})();
+
+// 8. Bloquer la console (empêcher l'inspection via F12 ou DevTools)
+(function () {
+    const devtools = /./;
+    devtools.toString = function () {
+        throw "🚫 L'inspection est bloquée pour protéger le contenu.";
+    };
+    console.log("%c ", devtools);
+})();
+ 
     // Fonctions pour les chapitres et favoris
     function updateChaptersGrid() {
         if (!chaptersGrid) return;
