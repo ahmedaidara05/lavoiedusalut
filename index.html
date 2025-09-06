@@ -1552,6 +1552,102 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
         padding-bottom: 20px;
     }
 }
+      /* overlay */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(8,10,20,0.55);
+    z-index: 9999;
+    padding: 20px;
+  }
+  .overlay[aria-hidden="false"] { display: flex; }
+
+  .overlay-content {
+    background: linear-gradient(180deg, #fff, #fbfbff);
+    width: min(980px, 96%);
+    max-height: 90vh;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(2,6,23,0.45);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .overlay-header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    background: linear-gradient(90deg,#f7f8ff,#ffffff);
+  }
+  .overlay-header h2 { margin:0; font-size:18px; letter-spacing:0.3px; }
+
+  .btn-close {
+    background:transparent;
+    border:none;
+    font-size:28px;
+    line-height:1;
+    cursor:pointer;
+    padding:6px 10px;
+    color:#333;
+  }
+
+  .overlay-body {
+    padding: 16px;
+    overflow:auto;
+  }
+
+  .chapters-list {
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:grid;
+    grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
+    gap:10px;
+  }
+  .chapters-list li {
+    background: linear-gradient(180deg,#ffffff,#f8f9ff);
+    border-radius:8px;
+    padding:12px;
+    border:1px solid rgba(10,10,30,0.04);
+    box-shadow: 0 6px 18px rgba(10,12,40,0.04);
+    cursor:default;
+    transition: transform .12s ease, box-shadow .12s ease;
+    font-size:14px;
+    line-height:1.3;
+  }
+  .chapters-list li:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(10,12,40,0.08);
+  }
+  .sura-number {
+    display:inline-block;
+    min-width:30px;
+    text-align:center;
+    margin-right:8px;
+    font-weight:700;
+    color:#0d47a1;
+  }
+  .chapters-list i { display:block; margin-top:8px; opacity:0.8; font-size:16px; }
+
+  .overlay-footer {
+    margin-top:14px;
+    padding-top:12px;
+    border-top:1px dashed rgba(0,0,0,0.04);
+  }
+  .overlay-footer p { margin:0; font-size:14px; }
+  .overlay-footer a { text-decoration:underline; color:inherit; font-weight:600; }
+
+  /* Responsive */
+  @media (max-width:520px){
+    .chapters-list { grid-template-columns: 1fr; }
+    .overlay-content { width: calc(100% - 24px); }
+  }
       /* Fenêtre modale pour les notes */
 .note-modal {
     display: none;
@@ -1926,7 +2022,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
     </div>
     <div class="chapters-grid" id="chaptersGrid">
     </div>
-         <div class="info"> 
+        <div class="info">
   <a href="#" id="info">Ces chapitres sont disponible gratuitement</a>
 </div>
 </div>
@@ -2088,7 +2184,68 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
     </div>
 </div>
         </div>
+<!-- Modal / Volet intégré -->
+<div id="chaptersOverlay" class="overlay" aria-hidden="true" role="dialog" aria-label="Liste des chapitres">
+  <div class="overlay-content" role="document">
+    <header class="overlay-header">
+      <h2>Liste complète des chapitres</h2>
+      <button id="closeOverlay" class="btn-close" aria-label="Fermer">&times;</button>
+    </header>
 
+    <main class="overlay-body">
+      <ul class="chapters-list">
+        <li data-sura="1"><span class="sura-number">1</span>Préambule<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="2"><span class="sura-number">2</span>Préface<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="3"><span class="sura-number">3</span>LA GENÈSE<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="4"><span class="sura-number">4</span>Qui m’a créé et qui suis-je ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="5"><span class="sura-number">5</span>Pourquoi on m’a créé ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="6"><span class="sura-number">6</span>Qu’est-ce qui m’attend ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="7"><span class="sura-number">7</span>Où irai-je ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="8"><span class="sura-number">8</span>MOUHAMMAD DE L'ISLAM<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="9"><span class="sura-number">9</span>JÉSUS-CHRIST<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="10"><span class="sura-number">10</span>Les miracles de Jésus<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="11"><span class="sura-number">11</span>La trinité<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="12"><span class="sura-number">12</span>Harangue<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="13"><span class="sura-number">13</span>Inclusion<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="14"><span class="sura-number">14</span>Le terme Dieu, Père et Fils de Dieu<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="15"><span class="sura-number">15</span>Postface<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="16"><span class="sura-number">16</span>Jésus, est-il Dieu ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="17"><span class="sura-number">17</span>Qui est Jésus ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="18"><span class="sura-number">18</span>Qui est Dieu ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="19"><span class="sura-number">19</span>LA BIBLE<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="20"><span class="sura-number">20</span>Le Coran et la Bible<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="21"><span class="sura-number">21</span>L’auteur du Coran est-il un homme ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="22"><span class="sura-number">22</span>Le Coran et la Science<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="23"><span class="sura-number">23</span>Le Coran, une copie de l’ancien testament ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="24"><span class="sura-number">24</span>Mathématique, dans le Coran ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="25"><span class="sura-number">25</span>LE CORAN<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="26"><span class="sura-number">26</span>L’Islam et le Christianisme<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="27"><span class="sura-number">27</span>LA VOIE DU SALUT<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="28"><span class="sura-number">28</span>Jésus, est-il le sauveur de l’humanité ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="29"><span class="sura-number">29</span>Par qui Dieu sauve l’humanité ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="30"><span class="sura-number">30</span>Jésus, est-il musulman ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="31"><span class="sura-number">31</span>La prière musulmane, dans la Bible ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="32"><span class="sura-number">32</span>L’islam, dans la Bible ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="33"><span class="sura-number">33</span>Les dix commandements<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="34"><span class="sura-number">34</span>L’islam et le christianisme<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="35"><span class="sura-number">35</span>La crucifixion de Jésus-Christ<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="36"><span class="sura-number">36</span>L’Évangile de Barnabé<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="37"><span class="sura-number">37</span>La question du péché<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="38"><span class="sura-number">38</span>MOUHAMMAD PSL DANS LA BIBLE ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="39"><span class="sura-number">39</span>Epilogue<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="40"><span class="sura-number">40</span>Le salut du musulman est-il garanti ?<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="41"><span class="sura-number">41</span>APPEL ET RAPPEL<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="42"><span class="sura-number">42</span>Un Dieu, une religion<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="43"><span class="sura-number">43</span>Liste de défis<br><br><i class="fas fa-book-open"></i></li>
+        <li data-sura="44"><span class="sura-number">44</span>APOCALYPSE<br><br><i class="fas fa-book-open"></i></li>
+      </ul>
+
+      <div class="overlay-footer">
+        <p>Ce livre est disponible en entier ici : <a href="https://ahmedaidara05.github.io/lavoiedusalut/#" target="_blank" rel="noopener noreferrer">https://ahmedaidara05.github.io/lavoiedusalut/#</a></p>
+      </div>
+    </main>
+  </div>
+</div>
         <div class="page" id="favoritesPage">
             <h2>Favoris</h2>
             <div class="chapters-grid" id="favoritesGrid">
@@ -3758,60 +3915,44 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <script>
-  document.getElementById('info').addEventListener('click', function (e) {
-    e.preventDefault();
+  (function(){
+    const trigger = document.getElementById('info');
+    const overlay = document.getElementById('chaptersOverlay');
+    const closeBtn = document.getElementById('closeOverlay');
 
-    const win = window.open('', '_blank', 'noopener,noreferrer');
-    if (!win) {
-      alert("Oups ! Autorise les pop-ups pour ouvrir la page d’info.");
-      return;
+    function openOverlay() {
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden'; // lock scroll
+      // focus management
+      closeBtn.focus();
+    }
+    function closeOverlay() {
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      trigger.focus();
     }
 
-    const html = `<!doctype html>
-<html lang="fr">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Infos – Chapitres gratuits</title>
-<style>
-  :root { --pad: 32px; }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    line-height: 1.6;
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    background: #fff;
-    color: #111;
-  }
-  .card {
-    max-width: 720px;
-    width: min(92vw, 720px);
-    padding: var(--pad);
-    border: 1px solid #eee;
-    border-radius: 16px;
-    box-shadow: 0 6px 24px rgba(0,0,0,.06);
-  }
-  h1 { margin: 0 0 12px; font-size: 28px; }
-  p { margin: 0 0 10px; }
-  .small { opacity: .7; font-size: 14px; }
-</style>
-</head>
-<body>
-  <main class="card" role="main" aria-label="Informations sur les chapitres gratuits">
-    <h1>Chapitres gratuits</h1>
-    <p>Les premiers chapitres sont accessibles librement pour découvrir l’œuvre. Bonne lecture !</p>
-    <p class="small">Ferme simplement cet onglet quand tu as fini.</p>
-  </main>
-</body>
-</html>`;
+    // Open on click
+    trigger.addEventListener('click', function(e){
+      e.preventDefault();
+      openOverlay();
+    });
 
-    win.document.open();
-    win.document.write(html);
-    win.document.close();
-  });
+    // Close on close button
+    closeBtn.addEventListener('click', function(){ closeOverlay(); });
+
+    // Close on clicking outside content
+    overlay.addEventListener('click', function(e){
+      if (e.target === overlay) closeOverlay();
+    });
+
+    // Close on ESC
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && overlay.getAttribute('aria-hidden') === 'false') closeOverlay();
+    });
+
+    // Optional : si tu veux que cliquer sur un chapitre fasse quelque chose, on peut ajouter un listener ici.
+  })();
 </script>
 </body>
 </html>   
