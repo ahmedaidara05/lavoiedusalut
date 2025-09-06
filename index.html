@@ -1926,9 +1926,9 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
     </div>
     <div class="chapters-grid" id="chaptersGrid">
     </div>
-          <div class="privacy-link">
-            <a href="#" id="privacyPolicyLink">Ces chapitres sont disponible gratuitement</a>
-        </div>
+         <div class="info"> 
+  <a href="#" id="info">Ces chapitres sont disponible gratuitement</a>
+</div>
 </div>
             <div class="content-container" id="contentContainer">
 
@@ -3757,6 +3757,61 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 </script>
+<script>
+  document.getElementById('info').addEventListener('click', function (e) {
+    e.preventDefault();
 
+    const win = window.open('', '_blank', 'noopener,noreferrer');
+    if (!win) {
+      alert("Oups ! Autorise les pop-ups pour ouvrir la page d’info.");
+      return;
+    }
+
+    const html = `<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Infos – Chapitres gratuits</title>
+<style>
+  :root { --pad: 32px; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    color: #111;
+  }
+  .card {
+    max-width: 720px;
+    width: min(92vw, 720px);
+    padding: var(--pad);
+    border: 1px solid #eee;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(0,0,0,.06);
+  }
+  h1 { margin: 0 0 12px; font-size: 28px; }
+  p { margin: 0 0 10px; }
+  .small { opacity: .7; font-size: 14px; }
+</style>
+</head>
+<body>
+  <main class="card" role="main" aria-label="Informations sur les chapitres gratuits">
+    <h1>Chapitres gratuits</h1>
+    <p>Les premiers chapitres sont accessibles librement pour découvrir l’œuvre. Bonne lecture !</p>
+    <p class="small">Ferme simplement cet onglet quand tu as fini.</p>
+  </main>
+</body>
+</html>`;
+
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
+  });
+</script>
 </body>
 </html>   
