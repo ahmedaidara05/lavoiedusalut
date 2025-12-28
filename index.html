@@ -2861,7 +2861,7 @@ const remainingTime = MAX_FREE_MINUTES - totalReadingTime;
 if (remainingTime <= 2 && remainingTime > 0) {
     showNotification(`⚠️ Attention : Il vous reste ${remainingTime} minute${remainingTime > 1 ? 's' : ''} gratuite${remainingTime > 1 ? 's' : ''}`);
 } else if (remainingTime <= 5) {
-    showNotification(`⏳ Temps gratuit : ${remainingTime} minute${remainingTime > 1 ? 's' : ''} restante${remainingTime > 1 ? 's' : ''}`);
+    showNotification(`⏳ Temps : ${remainingTime} minute${remainingTime > 1 ? 's' : ''} restante${remainingTime > 1 ? 's' : ''}`);
 }
     
     return true;
