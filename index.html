@@ -1880,6 +1880,85 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li {
     left: 10px !important;
     right: auto !important;
 }
+      
+      /* Modal de blocage */
+.block-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.block-content {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 3px solid #ff0000;
+}
+
+.block-icon {
+    font-size: 50px;
+    color: #ff0000;
+    margin-bottom: 20px;
+}
+
+.block-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff0000;
+    margin-bottom: 15px;
+}
+
+.block-message {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.whatsapp-btn {
+    background: #25D366;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px;
+    transition: transform 0.3s;
+}
+
+.whatsapp-btn:hover {
+    transform: scale(1.05);
+}
+
+.countdown-timer {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2e7d32;
+    margin-top: 20px;
+    padding: 10px;
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+.timer-expired {
+    color: #ff0000;
+}
     </style>
 </head>
 <body>
@@ -2280,6 +2359,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const privacyPolicyLink = document.getElementById('privacyPolicyLink');
     const backFromPrivacy = document.getElementById('backFromPrivacy');
     const toggleFavoritesViewBtn = document.getElementById('toggleFavoritesView');
+  // Variables pour la limitation de temps
+const MAX_FREE_MINUTES = 5; // 3 heures = 180 minutes
+const COOLDOWN_HOURS = 3; // Temps d'attente avant nouvelle session
+let totalReadingTime = parseInt(localStorage.getItem('totalReadingTime')) || 0;
+let sessionStartTime = parseInt(localStorage.getItem('sessionStartTime')) || Date.now();
+let isBlocked = localStorage.getItem('isBlocked') === 'true';
+let cooldownEnd = parseInt(localStorage.getItem('cooldownEnd')) || 0;
 let showingFavorites = false;
     let currentChapter = 1;
     let currentLanguage = localStorage.getItem('language') || 'fr';
@@ -2697,17 +2783,177 @@ en: "<b>(Surah Al-Ikhlas)</b><br>\"Say, 'He is Allah, [who is] One, (1) Allah, t
     
     const totalChapters = chapterContents.length;
     
-  function init() {
-        updateChaptersGrid();
-        updateChapterContent();
-        updateFavoritesPage();
-        applySavedSettings();
-        setupEventListeners();
-        updateLanguage(); // Ajouter cet appel
-        initNotes(); // Ajouter cette ligne
-
+ function init() {
+    // Vérifier d'abord si l'accès est bloqué
+    if (isBlocked && cooldownEnd > Date.now()) {
+        showBlockModal();
+        updateCountdown();
+    } else if (totalReadingTime >= MAX_FREE_MINUTES) {
+        blockAccess();
+        return;
     }
     
+    // Démarrer la vérification du temps
+    startTimeTracking();
+    
+    // Continuer avec l'initialisation normale
+    updateChaptersGrid();
+    updateChapterContent();
+    updateFavoritesPage();
+    applySavedSettings();
+    setupEventListeners();
+    updateLanguage();
+    initNotes();
+}
+  function startTimeTracking() {
+    // Vérifier le temps toutes les 30 secondes (au lieu de 1 minute)
+    setInterval(checkReadingTime, 60000); // 30000ms = 30 secondes
+    
+    // Vérifier aussi lors du changement de page
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            checkReadingTime();
+        }
+    });
+    
+    // Vérifier au clic
+    document.addEventListener('click', checkReadingTime);
+    
+    // Vérifier au scroll
+    document.addEventListener('scroll', checkReadingTime);
+    
+    // Vérifier au démarrage
+    checkReadingTime();
+}
+    // Fonction pour vérifier et gérer le temps de lecture
+function checkReadingTime() {
+    const now = Date.now();
+    
+    // Vérifier si en période de cooldown
+    if (cooldownEnd > 0 && now < cooldownEnd) {
+        showBlockModal();
+        updateCountdown();
+        return false;
+    }
+    
+    // Calculer le temps écoulé depuis le début de la session
+    const sessionElapsed = Math.floor((now - sessionStartTime) / 60000); // en minutes
+    
+    // Ajouter au temps total
+    totalReadingTime += sessionElapsed;
+    
+    // Mettre à jour le temps de session
+    sessionStartTime = now;
+    
+    // Sauvegarder
+    localStorage.setItem('totalReadingTime', totalReadingTime.toString());
+    localStorage.setItem('sessionStartTime', sessionStartTime.toString());
+    
+    // Vérifier si le temps maximum est dépassé
+    if (totalReadingTime >= MAX_FREE_MINUTES) {
+        blockAccess();
+        return false;
+    }
+    
+    // Afficher un avertissement quand il reste peu de temps
+// Afficher un avertissement quand il reste peu de temps
+const remainingTime = MAX_FREE_MINUTES - totalReadingTime;
+if (remainingTime <= 2 && remainingTime > 0) {
+    showNotification(`⚠️ Attention : Il vous reste ${remainingTime} minute${remainingTime > 1 ? 's' : ''} gratuite${remainingTime > 1 ? 's' : ''}`);
+} else if (remainingTime <= 5) {
+    showNotification(`⏳ Temps gratuit : ${remainingTime} minute${remainingTime > 1 ? 's' : ''} restante${remainingTime > 1 ? 's' : ''}`);
+}
+    
+    return true;
+}
+
+function blockAccess() {
+    isBlocked = true;
+    cooldownEnd = Date.now() + (COOLDOWN_HOURS * 60 * 60 * 1000);
+    
+    localStorage.setItem('isBlocked', 'true');
+    localStorage.setItem('cooldownEnd', cooldownEnd.toString());
+    localStorage.setItem('totalReadingTime', '0');
+    
+    showBlockModal();
+    updateCountdown();
+}
+
+function showBlockModal() {
+    const modal = document.getElementById('blockModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        
+        // Empêcher toute interaction avec le reste de l'application
+        document.querySelectorAll('.page, .nav-bar, header').forEach(el => {
+            el.style.pointerEvents = 'none';
+            el.style.opacity = '0.3';
+        });
+    }
+}
+
+function updateCountdown() {
+    const now = Date.now();
+    const remaining = cooldownEnd - now;
+    
+    if (remaining <= 0) {
+        // Réinitialiser le blocage
+        resetBlock();
+        return;
+    }
+    
+    const hours = Math.floor(remaining / (60 * 60 * 1000));
+    const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+    const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
+    
+    const timerElement = document.getElementById('countdownTimer');
+    const hoursElement = document.getElementById('remainingHours');
+    
+    if (timerElement) {
+        timerElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        if (hours < 1) {
+            timerElement.classList.add('timer-expired');
+        }
+    }
+    
+    if (hoursElement) {
+        hoursElement.textContent = hours;
+    }
+    
+    // Mettre à jour toutes les secondes
+    setTimeout(updateCountdown, 1000);
+}
+
+function resetBlock() {
+    isBlocked = false;
+    totalReadingTime = 0;
+    sessionStartTime = Date.now();
+    cooldownEnd = 0;
+    
+    localStorage.removeItem('isBlocked');
+    localStorage.removeItem('cooldownEnd');
+    localStorage.setItem('totalReadingTime', '0');
+    localStorage.setItem('sessionStartTime', sessionStartTime.toString());
+    
+    const modal = document.getElementById('blockModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+    
+    // Restaurer l'interaction
+    document.querySelectorAll('.page, .nav-bar, header').forEach(el => {
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+    });
+}
+
+// Fonction pour ouvrir WhatsApp
+function openWhatsApp() {
+    const phoneNumber = "221781525106";
+    const message = encodeURIComponent("Bonjour, j'aimerai avoir la version complète du livre La Voie du Salut.");
+    const url = `https://wa.me/${phoneNumber}?text=${message}`;
+    window.open(url, '_blank');
+}
     // Appliquer les paramètres sauvegardés
     function applySavedSettings() {
         // Appliquer les couleurs
@@ -2781,6 +3027,11 @@ en: "<b>(Surah Al-Ikhlas)</b><br>\"Say, 'He is Allah, [who is] One, (1) Allah, t
         if (closeCustomizationBtn) {
             closeCustomizationBtn.addEventListener('click', toggleCustomizationPanel);
         }
+      // WhatsApp button
+const whatsappBtn = document.getElementById('whatsappBtn');
+if (whatsappBtn) {
+    whatsappBtn.addEventListener('click', openWhatsApp);
+}
         // ===== AJOUTER CES LIGNES POUR LES NOTES =====
     // Écouteurs pour la page de notes
     if (document.getElementById('backFromNotes')) {
@@ -4032,7 +4283,6 @@ bgOptions.forEach(option => {
     });
 });
 
-
 document.addEventListener("DOMContentLoaded", () => {
     const savedBg = localStorage.getItem("readingBg");
     if (savedBg) {
@@ -4040,6 +4290,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 </script>
-
+<!-- Modal de blocage -->
+<div class="block-modal" id="blockModal">
+    <div class="block-content">
+        <div class="block-icon">
+            <i class="fas fa-clock"></i>
+        </div>
+        <h2 class="block-title">TEMPS DE LECTURE GRATUIT ÉPUISÉ</h2>
+<p class="block-message">
+    Vous avez utilisé vos 5 minutes de lecture gratuite.<br>
+    Revenez dans <span id="remainingHours">3</span> heures pour obtenir<br>
+    à nouveau 5 minutes gratuites ou procédez à l'achat<br>
+    pour débloquer l'accès complet immédiatement.
+</p>
+        
+        <div id="countdownContainer">
+            <div class="countdown-timer">
+                Prochaine lecture disponible dans : 
+                <span id="countdownTimer">24:00:00</span>
+            </div>
+        </div>
+        
+        <button class="whatsapp-btn" id="whatsappBtn">
+            <i class="fab fa-whatsapp"></i>
+            Commander sur WhatsApp
+        </button>
+        
+        <p style="margin-top: 20px; font-size: 14px; color: #666;">
+            WhatsApp: +221 78 152 5106
+        </p>
+    </div>
+</div>
 </body>
 </html>   
